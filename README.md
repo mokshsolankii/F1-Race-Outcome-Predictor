@@ -33,10 +33,10 @@ A machine learning project that predicts Formula 1 race outcomes using historica
 ## Application Preview
 
 ### Home Screen
-![Home Screen](homepage.png)
+![Home Screen](screenshots/homepage.png)
 
 ### Prediction Example
-![Prediction Example](prediction.png)
+![Prediction Example](screenshots/prediction.png)
 
 ## How to Run
 
