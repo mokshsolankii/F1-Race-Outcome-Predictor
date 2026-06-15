@@ -44,5 +44,4 @@ Install dependencies and then run the dashboard:
 
 pip install -r requirements.txt
 
-streamlit run app_v1.py
-
+python -m streamlit run app_v1.py
