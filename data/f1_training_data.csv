@@ -1,0 +1,161 @@
+year,race,driver,quali_time_s,finish_position
+2022,Bahrain,ALB,92.664,13.0
+2022,Bahrain,ALO,91.621,9.0
+2022,Bahrain,BOT,91.56,6.0
+2022,Bahrain,GAS,91.635,20.0
+2022,Bahrain,HAM,91.048,3.0
+2022,Bahrain,HUL,92.777,17.0
+2022,Bahrain,LAT,93.634,16.0
+2022,Bahrain,LEC,90.558,1.0
+2022,Bahrain,MAG,91.461,5.0
+2022,Bahrain,MSC,91.998,11.0
+2022,Bahrain,NOR,92.008,15.0
+2022,Bahrain,OCO,91.782,7.0
+2022,Bahrain,PER,90.921,18.0
+2022,Bahrain,RIC,92.945,14.0
+2022,Bahrain,RUS,91.252,4.0
+2022,Bahrain,SAI,90.687,2.0
+2022,Bahrain,STR,93.032,12.0
+2022,Bahrain,TSU,92.75,8.0
+2022,Bahrain,VER,90.681,19.0
+2022,Bahrain,ZHO,92.387,10.0
+2022,Saudi Arabia,ALB,90.492,14.0
+2022,Saudi Arabia,ALO,89.147,16.0
+2022,Saudi Arabia,BOT,89.183,15.0
+2022,Saudi Arabia,GAS,89.254,8.0
+2022,Saudi Arabia,HAM,90.343,10.0
+2022,Saudi Arabia,HUL,90.543,12.0
+2022,Saudi Arabia,LAT,91.817,18.0
+2022,Saudi Arabia,LEC,88.225,2.0
+2022,Saudi Arabia,MAG,89.546,9.0
+2022,Saudi Arabia,MSC,89.92,
+2022,Saudi Arabia,NOR,89.651,7.0
+2022,Saudi Arabia,OCO,89.068,6.0
+2022,Saudi Arabia,PER,88.2,4.0
+2022,Saudi Arabia,RIC,89.773,17.0
+2022,Saudi Arabia,RUS,89.104,5.0
+2022,Saudi Arabia,SAI,73.67,3.0
+2022,Saudi Arabia,STR,90.256,13.0
+2022,Saudi Arabia,TSU,,19.0
+2022,Saudi Arabia,VER,88.461,1.0
+2022,Saudi Arabia,ZHO,89.819,11.0
+2022,Australia,ALB,80.135,10.0
+2022,Australia,ALO,78.815,17.0
+2022,Australia,BOT,79.251,8.0
+2022,Australia,GAS,79.226,9.0
+2022,Australia,HAM,78.825,4.0
+2022,Australia,LAT,81.372,16.0
+2022,Australia,LEC,77.868,1.0
+2022,Australia,MAG,80.254,14.0
+2022,Australia,MSC,80.104,13.0
+2022,Australia,NOR,78.703,5.0
+2022,Australia,OCO,79.061,7.0
+2022,Australia,PER,78.24,2.0
+2022,Australia,RIC,79.032,6.0
+2022,Australia,RUS,78.933,3.0
+2022,Australia,SAI,78.469,20.0
+2022,Australia,STR,106.833,12.0
+2022,Australia,TSU,79.424,15.0
+2022,Australia,VER,78.154,18.0
+2022,Australia,VET,81.149,19.0
+2022,Australia,ZHO,79.91,11.0
+2023,Bahrain,ALB,91.461,10.0
+2023,Bahrain,ALO,90.336,3.0
+2023,Bahrain,BOT,91.443,8.0
+2023,Bahrain,DEV,92.121,14.0
+2023,Bahrain,GAS,91.818,9.0
+2023,Bahrain,HAM,90.384,5.0
+2023,Bahrain,HUL,90.809,15.0
+2023,Bahrain,LEC,90.0,19.0
+2023,Bahrain,MAG,91.892,13.0
+2023,Bahrain,NOR,91.381,17.0
+2023,Bahrain,OCO,90.914,18.0
+2023,Bahrain,PER,89.846,2.0
+2023,Bahrain,PIA,92.101,20.0
+2023,Bahrain,RUS,90.34,7.0
+2023,Bahrain,SAI,90.154,4.0
+2023,Bahrain,SAR,91.652,12.0
+2023,Bahrain,STR,90.836,6.0
+2023,Bahrain,TSU,91.4,11.0
+2023,Bahrain,VER,89.708,1.0
+2023,Bahrain,ZHO,91.473,16.0
+2023,Saudi Arabia,ALB,89.994,19.0
+2023,Saudi Arabia,ALO,88.73,3.0
+2023,Saudi Arabia,BOT,89.668,18.0
+2023,Saudi Arabia,DEV,90.244,14.0
+2023,Saudi Arabia,GAS,89.357,9.0
+2023,Saudi Arabia,HAM,89.223,5.0
+2023,Saudi Arabia,HUL,89.451,12.0
+2023,Saudi Arabia,LEC,88.42,7.0
+2023,Saudi Arabia,MAG,89.517,10.0
+2023,Saudi Arabia,NOR,90.447,17.0
+2023,Saudi Arabia,OCO,89.078,8.0
+2023,Saudi Arabia,PER,88.265,1.0
+2023,Saudi Arabia,PIA,89.243,15.0
+2023,Saudi Arabia,RUS,88.857,4.0
+2023,Saudi Arabia,SAI,88.931,6.0
+2023,Saudi Arabia,SAR,89.721,16.0
+2023,Saudi Arabia,STR,88.945,20.0
+2023,Saudi Arabia,TSU,89.939,11.0
+2023,Saudi Arabia,VER,88.761,2.0
+2023,Saudi Arabia,ZHO,89.461,13.0
+2023,Australia,ALB,77.609,19.0
+2023,Australia,ALO,77.139,3.0
+2023,Australia,BOT,78.714,11.0
+2023,Australia,DEV,78.335,15.0
+2023,Australia,GAS,77.574,13.0
+2023,Australia,HAM,77.104,2.0
+2023,Australia,HUL,77.412,7.0
+2023,Australia,LEC,77.369,20.0
+2023,Australia,MAG,78.129,17.0
+2023,Australia,NOR,78.119,6.0
+2023,Australia,OCO,77.768,14.0
+2023,Australia,PER,100.187,5.0
+2023,Australia,PIA,78.517,8.0
+2023,Australia,RUS,76.968,18.0
+2023,Australia,SAI,77.27,12.0
+2023,Australia,SAR,78.557,16.0
+2023,Australia,STR,77.308,4.0
+2023,Australia,TSU,78.099,10.0
+2023,Australia,VER,76.732,1.0
+2023,Australia,ZHO,78.54,9.0
+2024,Bahrain,ALB,90.221,15.0
+2024,Bahrain,ALO,89.542,9.0
+2024,Bahrain,BOT,90.756,19.0
+2024,Bahrain,GAS,90.948,18.0
+2024,Bahrain,HAM,89.71,7.0
+2024,Bahrain,HUL,89.851,16.0
+2024,Bahrain,LEC,89.165,4.0
+2024,Bahrain,MAG,90.529,12.0
+2024,Bahrain,NOR,89.614,6.0
+2024,Bahrain,OCO,90.793,17.0
+2024,Bahrain,PER,89.537,2.0
+2024,Bahrain,PIA,89.683,8.0
+2024,Bahrain,RIC,90.278,13.0
+2024,Bahrain,RUS,89.485,5.0
+2024,Bahrain,SAI,89.507,3.0
+2024,Bahrain,SAR,90.77,20.0
+2024,Bahrain,STR,89.965,10.0
+2024,Bahrain,TSU,90.129,14.0
+2024,Bahrain,VER,89.179,1.0
+2024,Bahrain,ZHO,90.757,11.0
+2024,Saudi Arabia,ALB,88.98,11.0
+2024,Saudi Arabia,ALO,87.846,5.0
+2024,Saudi Arabia,BEA,88.642,7.0
+2024,Saudi Arabia,BOT,89.179,17.0
+2024,Saudi Arabia,GAS,89.479,20.0
+2024,Saudi Arabia,HAM,88.46,9.0
+2024,Saudi Arabia,HUL,89.055,10.0
+2024,Saudi Arabia,LEC,87.791,3.0
+2024,Saudi Arabia,MAG,89.02,12.0
+2024,Saudi Arabia,NOR,88.132,8.0
+2024,Saudi Arabia,OCO,89.475,13.0
+2024,Saudi Arabia,PER,87.807,2.0
+2024,Saudi Arabia,PIA,88.089,4.0
+2024,Saudi Arabia,RIC,89.025,16.0
+2024,Saudi Arabia,RUS,88.316,6.0
+2024,Saudi Arabia,SAR,89.526,14.0
+2024,Saudi Arabia,STR,88.25,19.0
+2024,Saudi Arabia,TSU,88.547,15.0
+2024,Saudi Arabia,VER,87.472,1.0
+2024,Saudi Arabia,ZHO,121.101,18.0
