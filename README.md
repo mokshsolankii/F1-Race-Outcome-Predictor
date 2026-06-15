@@ -30,6 +30,14 @@ A machine learning project that predicts Formula 1 race outcomes using historica
 * Scikit-Learn
 * Streamlit
 
+## Application Preview
+
+### Home Screen
+![Home Screen](homepage.png)
+
+### Prediction Example
+![Prediction Example](prediction_example.png)
+
 ## How to Run
 
 Install dependencies and then run the dashboard:
