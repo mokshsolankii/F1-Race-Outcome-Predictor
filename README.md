@@ -35,5 +35,6 @@ A machine learning project that predicts Formula 1 race outcomes using historica
 Install dependencies and then run the dashboard:
 
 pip install -r requirements.txt
+
 streamlit run app_v1.py
 
