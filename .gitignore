@@ -8,3 +8,7 @@ venv/
 .streamlit/
 
 *.log
+
+f1_cache/
+catboost_info/
+prediction_*.csv
