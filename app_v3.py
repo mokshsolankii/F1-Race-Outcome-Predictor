@@ -159,7 +159,6 @@ st.markdown(
     /* Style override for popover telemetry cards */
     div[data-testid="stPopover"] { width: 100% !important; }
 
-
     [data-testid="stPopover"] { position: relative; margin-bottom: -70px; z-index: 10; opacity: 0; }
     [data-testid="stPopover"] > button { height: 70px; }
     </style>
@@ -248,7 +247,17 @@ TRACK_METRICS = {
 
 def get_driver_image(driver_code):
     local_path = f"drivers_images/{driver_code}.png"
-    if os.path.exists(local_path): return local_path
+    
+    # If file exists in local workspace, sandbox inject via Base64 stream bypass
+    if os.path.exists(local_path):
+        try:
+            with open(local_path, "rb") as img_file:
+                b64_string = base64.b64encode(img_file.read()).decode()
+            return f"data:image/png;base64,{b64_string}"
+        except Exception:
+            pass
+            
+    # Universal CDN asset router fallback
     return OFFICIAL_F1_IMAGES.get(driver_code, "https://media.formula1.com/d_driver_fallback_image.png")
 
 @st.cache_resource
@@ -304,7 +313,7 @@ with row1_cols[0]:
     leader_code = "ANT"
     border_color = TEAM_COLORS.get(leader_team, "#FF1801")
 
-    # CSS HACK: Popover ko card ke upar transparent karke baitha rahe hain
+    # CSS HACK: Popover overlay transparent layers execution
     st.markdown("""
     <style>
     div[data-testid="stPopover"] {
@@ -322,7 +331,7 @@ with row1_cols[0]:
         st.markdown("<h3 style='color:#FF1801;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
         st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True)
 
-    # Permanent Card (Jo dikhega)
+    # Permanent Render View Card Container Layout
     st.markdown(f"""
     <div class='driver-card'>
         <img src='{get_driver_image(leader_code)}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
@@ -378,39 +387,61 @@ if trigger_prediction:
         except Exception as e:
             st.error(f"Failed to execute prediction pipeline: {e}")
             st.stop()
-        if pred_df is None or pred_df.empty: st.warning("No data returned.")
+            
+        if pred_df is None or pred_df.empty: 
+            st.warning("No data returned.")
         else:
-            st.markdown("### 🏆 Predicted Podium")
+            st.markdown("<h2 style='margin: 20px 0;'>🏆 Predicted Podium</h2>", unsafe_allow_html=True)
             podium_cols = st.columns(3)
+            
+            # --- P2: RUNNER UP (LEFT PANEL) ---
             if len(pred_df) > 1:
                 p2_row = pred_df.iloc[1]
                 p2_color = TEAM_COLORS.get(p2_row['team'], '#FFFFFF')
                 p2_logo_centered = get_base64_logo_html(p2_row['team'], p2_color, centered=True)
                 with podium_cols[0]:
-                    st.markdown("<div><span class='pos-badge' style='background:#C0C0C0; color:#111;'>🥈 P2</span></div>", unsafe_allow_html=True)
-                    st.image(get_driver_image(p2_row['driver']), width=170)
-                    st.markdown(f"### {p2_row['_name']}")
-                    st.markdown(p2_logo_centered, unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0;">
+                        <div><span class='pos-badge' style='background:#C0C0C0; color:#111; margin-bottom: 15px;'>🥈 P2</span></div>
+                        <img src="{get_driver_image(p2_row['driver'])}" style="width: 160px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
+                        <h3 style="margin: 5px 0 2px 0; font-size: 1.35em; color: #FFF;">{p2_row['_name']}</h3>
+                        <div style="width: 100%; margin-top: 5px;">{p2_logo_centered}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            # --- P1: RACE WINNER (CENTER HIGHLIGHT PANEL) ---
             if len(pred_df) > 0:
                 p1_row = pred_df.iloc[0]
                 p1_color = TEAM_COLORS.get(p1_row['team'], '#FFFFFF')
                 p1_logo_centered = get_base64_logo_html(p1_row['team'], p1_color, centered=True)
                 with podium_cols[1]:
-                    st.markdown("<div><span class='pos-badge' style='background:#FFD700; color:#111;'>🏆 WINNER</span></div>", unsafe_allow_html=True)
-                    st.image(get_driver_image(p1_row['driver']), width=210)
-                    st.markdown(f"<h2>{p1_row['_name']}</h2>", unsafe_allow_html=True)
-                    st.markdown(p1_logo_centered, unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; border: 1px solid rgba(255, 215, 0, 0.2); background: rgba(255, 215, 0, 0.01); border-radius: 10px;">
+                        <div><span class='pos-badge' style='background:#FFD700; color:#111; margin-bottom: 15px; box-shadow: 0 0 10px rgba(255,215,0,0.3);'>🏆 WINNER</span></div>
+                        <img src="{get_driver_image(p1_row['driver'])}" style="width: 190px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
+                        <h2 style="margin: 5px 0 2px 0; font-size: 1.6em; color: #FFF; font-weight: bold;">{p1_row['_name']}</h2>
+                        <div style="width: 100%; margin-top: 5px;">{p1_logo_centered}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            # --- P3: THIRD PLACE (RIGHT PANEL) ---
             if len(pred_df) > 2:
                 p3_row = pred_df.iloc[2]
                 p3_color = TEAM_COLORS.get(p3_row['team'], '#FFFFFF')
                 p3_logo_centered = get_base64_logo_html(p3_row['team'], p3_color, centered=True)
                 with podium_cols[2]:
-                    st.markdown("<div><span class='pos-badge' style='background:#CD7F32; color:#111;'>🥉 P3</span></div>", unsafe_allow_html=True)
-                    st.image(get_driver_image(p3_row['driver']), width=170)
-                    st.markdown(f"### {p3_row['_name']}")
-                    st.markdown(p3_logo_centered, unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0;">
+                        <div><span class='pos-badge' style='background:#CD7F32; color:#111; margin-bottom: 15px;'>🥉 P3</span></div>
+                        <img src="{get_driver_image(p3_row['driver'])}" style="width: 160px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
+                        <h3 style="margin: 5px 0 2px 0; font-size: 1.35em; color: #FFF;">{p3_row['_name']}</h3>
+                        <div style="width: 100%; margin-top: 5px;">{p3_logo_centered}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
             st.markdown("<br><h3 style='margin-top: 25px;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
+            
             for idx, row in pred_df.iterrows():
                 row_cols = st.columns([1, 2, 4, 2])
                 row_cols[0].markdown(f"**P{row['predicted_position']}**")
@@ -419,4 +450,5 @@ if trigger_prediction:
                 logo_html_block = get_base64_logo_html(row['team'], border_color, centered=False)
                 row_cols[2].markdown(logo_html_block, unsafe_allow_html=True)
                 row_cols[3].markdown(f"Grid: {int(row['grid_position'])}")
+                
             st.success(f"📊 Prediction output processed cleanly.")
