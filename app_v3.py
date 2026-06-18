@@ -163,7 +163,7 @@ TRACK_METRICS = {
     "Brazil": {"name": "Autódromo José Carlos Pace (Interlagos)", "weather": "🌧️ Unpredictable | Track Temp: 25°C"},
     "Las Vegas": {"name": "Las Vegas Strip Circuit", "weather": "🌙 Cold Night | Track Temp: 14°C"},
     "Qatar": {"name": "Lusail International Circuit", "weather": "🌙 Windy Night | Track Temp: 31°C"},
-    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "🌙 Twlight Race | Track Temp: 28°C"}
+    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "🌙 Twlight Race | Track Temp: 28°C"},
     "Hungary": {"name": "Hungaroring (Budapest)", "weather": "☀️ Scorching | Track Temp: 43°C"},
     "Spain (Madrid)": {"name": "Madrid Street Circuit", "weather": "🌤️ Pleasant | Track Temp: 28°C"},
 }
