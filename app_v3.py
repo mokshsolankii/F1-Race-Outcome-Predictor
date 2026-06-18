@@ -84,7 +84,7 @@ OFFICIAL_F1_IMAGES = {
     "SAI": "https://media.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png",
     "HUL": "https://media.formula1.com/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png",
     "BOR": "https://media.formula1.com/content/dam/fom-website/drivers/G/GABBOR01_Gabriel_Bortoleto/gabbor01.png",
-    "ALO": "https://media.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png",
+    "ALO": "https://media.formula1.com/content/dam/fom-website/teams/Aston-Martin-Aramco-F1-Team/Logo.png", # Fallback map trace
     "STR": "https://media.formula1.com/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png",
     "PER": "https://media.formula1.com/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png",
     "BOT": "https://media.formula1.com/content/dam/fom-website/drivers/V/VALBOT01_Valtteri_Bottas/valbot01.png",
@@ -95,6 +95,21 @@ TEAM_COLORS = {
     "BWT Alpine F1 Team": "#FF87BC", "Visa Cash App Racing Bulls F1 Team": "#66C2FF", "TGR Haas F1 Team": "#B6BABD",
     "Atlassian Williams F1 Team": "#37BEDD", "Audi Revolut F1 Team": "#780016", "Aston Martin Aramco F1 Team": "#229971",
     "Cadillac F1 Team": "#FCE300", "Unknown": "#FFFFFF"
+}
+
+TEAM_LOGOS = {
+    "Mercedes": "https://media.formula1.com/content/dam/fom-website/teams/2026/mercedes-logo.png",
+    "Ferrari": "https://media.formula1.com/content/dam/fom-website/teams/2026/ferrari-logo.png",
+    "McLaren": "https://media.formula1.com/content/dam/fom-website/teams/2026/mclaren-logo.png",
+    "Red Bull Racing": "https://media.formula1.com/content/dam/fom-website/teams/2026/red-bull-racing-logo.png",
+    "BWT Alpine F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/alpine-logo.png",
+    "Visa Cash App Racing Bulls F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/rb-logo.png",
+    "TGR Haas F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/haas-logo.png",
+    "Atlassian Williams F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/williams-logo.png",
+    "Aston Martin Aramco F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/aston-martin-logo.png",
+    "Audi Revolut F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/sauber-logo.png",
+    "Cadillac F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/cadillac-logo.png",
+    "Unknown": "https://media.formula1.com/d_default_fallback_image.png"
 }
 
 @st.cache_resource
@@ -157,33 +172,36 @@ if st.sidebar.button("🔮 Generate Grid Prediction", use_container_width=True):
                 p2_row = pred_df.iloc[1]
                 p2_img = get_driver_image(p2_row['driver'])
                 p2_color = TEAM_COLORS.get(p2_row['team'], "#FFFFFF")
+                p2_logo = TEAM_LOGOS.get(p2_row['team'], TEAM_LOGOS["Unknown"])
                 with podium_cols[0]:
                     st.markdown("<div style='border-top: 4px solid #C0C0C0; padding-top: 10px; margin-bottom: 15px;'><span class='pos-badge' style='background:#C0C0C0; color:#111;'>🥈 P2</span></div>", unsafe_allow_html=True)
                     st.image(p2_img, width=170)
                     st.markdown(f"### {p2_row['_name']}")
-                    st.markdown(f"<div style='display: inline-block; border-left: 4px solid {p2_color}; padding-left: 8px; color: #AAAAAA; font-weight: 500;'>{p2_row['team']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='display: flex; align-items: center; justify-content: center; gap: 8px;'><img src='{p2_logo}' width='25'/><div style='border-left: 4px solid {p2_color}; padding-left: 8px; color: #AAAAAA; font-weight: 500;'>{p2_row['team']}</div></div>", unsafe_allow_html=True)
 
             # P1 (Center Card Winner)
             if len(pred_df) > 0:
                 p1_row = pred_df.iloc[0]
                 p1_img = get_driver_image(p1_row['driver'])
                 p1_color = TEAM_COLORS.get(p1_row['team'], "#FFFFFF")
+                p1_logo = TEAM_LOGOS.get(p1_row['team'], TEAM_LOGOS["Unknown"])
                 with podium_cols[1]:
                     st.markdown("<div style='border-top: 4px solid #FFD700; padding-top: 10px; margin-bottom: 15px;'><span class='pos-badge' style='background:#FFD700; color:#111;'>🏆 WINNER</span></div>", unsafe_allow_html=True)
                     st.image(p1_img, width=210)
                     st.markdown(f"<h2>{p1_row['_name']}</h2>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='display: inline-block; border-left: 4px solid {p1_color}; padding-left: 8px; color: #FFFFFF; font-weight: bold;'>{p1_row['team']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='display: flex; align-items: center; justify-content: center; gap: 8px;'><img src='{p1_logo}' width='30'/><div style='border-left: 4px solid {p1_color}; padding-left: 8px; color: #FFFFFF; font-weight: bold;'>{p1_row['team']}</div></div>", unsafe_allow_html=True)
 
             # P3 (Right Card)
             if len(pred_df) > 2:
                 p3_row = pred_df.iloc[2]
                 p3_img = get_driver_image(p3_row['driver'])
                 p3_color = TEAM_COLORS.get(p3_row['team'], "#FFFFFF")
+                p3_logo = TEAM_LOGOS.get(p3_row['team'], TEAM_LOGOS["Unknown"])
                 with podium_cols[2]:
                     st.markdown("<div style='border-top: 4px solid #CD7F32; padding-top: 10px; margin-bottom: 15px;'><span class='pos-badge' style='background:#CD7F32; color:#111;'>🥉 P3</span></div>", unsafe_allow_html=True)
                     st.image(p3_img, width=170)
                     st.markdown(f"### {p3_row['_name']}")
-                    st.markdown(f"<div style='display: inline-block; border-left: 4px solid {p3_color}; padding-left: 8px; color: #AAAAAA; font-weight: 500;'>{p3_row['team']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='display: flex; align-items: center; justify-content: center; gap: 8px;'><img src='{p3_logo}' width='25'/><div style='border-left: 4px solid {p3_color}; padding-left: 8px; color: #AAAAAA; font-weight: 500;'>{p3_row['team']}</div></div>", unsafe_allow_html=True)
 
             st.markdown("<br><h3 style='text-align: left !important; margin-top: 25px;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
@@ -202,12 +220,13 @@ if st.sidebar.button("🔮 Generate Grid Prediction", use_container_width=True):
                 start_grid = f"Grid: {int(row['grid_position'])}"
                 
                 team_color = TEAM_COLORS.get(team_name, "#FFFFFF")
+                t_logo = TEAM_LOGOS.get(team_name, TEAM_LOGOS["Unknown"])
                 row_cols = st.columns([1, 2, 4, 2])
                 
                 row_cols[0].markdown(f"**{pos}**")
                 row_cols[1].markdown(driver_name)
                 
-                team_stripe_html = f"<div style='border-left: 6px solid {team_color}; padding-left: 12px; font-weight: 500; height: 24px; display: flex; align-items: center; color: #EEEEEE;'>{team_name}</div>"
+                team_stripe_html = f"<div style='border-left: 6px solid {team_color}; padding-left: 12px; font-weight: 500; height: 30px; display: flex; align-items: center; gap: 10px; color: #EEEEEE;'><img src='{t_logo}' width='24'/>{team_name}</div>"
                 row_cols[2].markdown(team_stripe_html, unsafe_allow_html=True)
                 
                 row_cols[3].markdown(start_grid)
