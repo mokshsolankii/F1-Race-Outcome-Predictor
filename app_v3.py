@@ -144,34 +144,19 @@ st.markdown("<p style='font-size: 1.1em; color: #BBBBBB;'>Powered by CatBoost & 
 st.markdown("---")
 
 st.sidebar.header("🔧 Race Configuration")
-year = st.sidebar.selectbox("Select Year", [2026, 2025, 2024])
 
-# Strict Dynamic F1 Schedule Mapping
-F1_CALENDARS = {
-    2026: [
-        "Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", 
-        "Monaco", "Barcelona", "Canada", "Austria", "British", "Belgium", 
-        "Hungary", "Netherlands", "Monza", "Baku", "Singapore", "Austin", 
-        "Mexico", "Sao Paulo", "Las Vegas", "Qatar", "Abu Dhabi", "Madrid"
-    ],
-    2025: [
-        "Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", 
-        "Emilia Romagna", "Monaco", "Barcelona", "Canada", "Austria", "British", 
-        "Belgium", "Hungary", "Netherlands", "Monza", "Baku", "Singapore", 
-        "Austin", "Mexico", "Sao Paulo", "Las Vegas", "Qatar", "Abu Dhabi"
-    ],
-    2024: [
-        "Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", 
-        "Emilia Romagna", "Monaco", "Canada", "Barcelona", "Austria", "British", 
-        "Hungary", "Belgium", "Netherlands", "Monza", "Baku", "Singapore", 
-        "Austin", "Mexico", "Sao Paulo", "Las Vegas", "Qatar", "Abu Dhabi"
-    ]
-}
+# Year statically locked to 2026 to ensure 22-driver mapping parity
+year = 2026
 
-# Fetch filtered list based on selection
-available_races = F1_CALENDARS.get(year, ["Bahrain", "Monaco", "Monza"])
+# Official 2026 Dynamic F1 Schedule List (Imola removed, Madrid added)
+available_races = [
+    "Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", 
+    "Monaco", "Barcelona", "Canada", "Austria", "British", "Belgium", 
+    "Hungary", "Netherlands", "Monza", "Baku", "Singapore", "Austin", 
+    "Mexico", "Sao Paulo", "Las Vegas", "Qatar", "Abu Dhabi", "Madrid"
+]
+
 race_name = st.sidebar.selectbox("Select Grand Prix", available_races)
-round_num = st.sidebar.number_input("Round Number (Optional)", min_value=1, max_value=25, value=8)
 
 def get_driver_image(driver_code):
     local_path = f"drivers_images/{driver_code}.png"
@@ -183,7 +168,8 @@ if st.sidebar.button("🔮 Generate Grid Prediction", use_container_width=True):
     with st.spinner("Processing prediction..."):
         try:
             import predict_race_v3
-            pred_df = predict_race_v3.predict_race(year, race_name, round_num)
+            # Fixed context routing passing frozen 2026 parameters
+            pred_df = predict_race_v3.predict_race(year, race_name, None)
         except Exception as e:
             st.error(f"Failed to execute prediction pipeline: {e}")
             st.stop()
@@ -230,44 +216,4 @@ if st.sidebar.button("🔮 Generate Grid Prediction", use_container_width=True):
                 p3_img = get_driver_image(p3_row['driver'])
                 p3_color = TEAM_COLORS.get(p3_row['team'], "#FFFFFF")
                 p3_logo_path = TEAM_LOGOS.get(p3_row['team'], "team_logos/Unknown.png")
-                p3_base64 = get_base64_image(p3_logo_path)
-                with podium_cols[2]:
-                    st.markdown("<div style='border-top: 4px solid #CD7F32; padding-top: 10px; margin-bottom: 15px;'><span class='pos-badge' style='background:#CD7F32; color:#111;'>🥉 P3</span></div>", unsafe_allow_html=True)
-                    st.image(p3_img, width=170)
-                    st.markdown(f"### {p3_row['_name']}")
-                    
-                    logo_html = f"<img src='{p3_base64}' width='25'/>" if p3_base64 else ""
-                    st.markdown(f"<div style='display: flex; align-items: center; justify-content: center; gap: 8px;'>{logo_html}<div style='border-left: 4px solid {p3_color}; padding-left: 8px; color: #AAAAAA; font-weight: 500;'>{p3_row['team']}</div></div>", unsafe_allow_html=True)
-
-            st.markdown("<br><h3 style='text-align: left !important; margin-top: 25px;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
-            st.markdown("---")
-            
-            h_cols = st.columns([1, 2, 4, 2])
-            h_cols[0].markdown("**Pos**")
-            h_cols[1].markdown("**Driver Name**")
-            h_cols[2].markdown("**Team Lineup**")
-            h_cols[3].markdown("**Starting Grid**")
-            st.markdown("---")
-            
-            for idx, row in pred_df.iterrows():
-                pos = f"P{row['predicted_position']}"
-                driver_name = row['_name']
-                team_name = row['team']
-                start_grid = f"Grid: {int(row['grid_position'])}"
-                
-                team_color = TEAM_COLORS.get(team_name, "#FFFFFF")
-                t_logo_path = TEAM_LOGOS.get(team_name, "team_logos/Unknown.png")
-                t_base64 = get_base64_image(t_logo_path)
-                
-                row_cols = st.columns([1, 2, 4, 2])
-                
-                row_cols[0].markdown(f"**{pos}**")
-                row_cols[1].markdown(driver_name)
-                
-                logo_html = f"<img src='{t_base64}' width='24'/>" if t_base64 else ""
-                team_stripe_html = f"<div style='border-left: 6px solid {team_color}; padding-left: 12px; font-weight: 500; height: 30px; display: flex; align-items: center; gap: 10px; color: #EEEEEE;'>{logo_html}{team_name}</div>"
-                row_cols[2].markdown(team_stripe_html, unsafe_allow_html=True)
-                
-                row_cols[3].markdown(start_grid)
-                
-            st.success(f"📊 Prediction output processed cleanly.")
+                p3_base64 = get
