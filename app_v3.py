@@ -299,12 +299,24 @@ with row1_cols[0]:
     leader_team = live_wdc_df.iloc[0]["Team"] if not live_wdc_df.empty else "Mercedes"
     leader_code = "ANT"
     border_color = TEAM_COLORS.get(leader_team, "#FF1801")
+    
+    # Image ko local file se base64 convert karke bhej rahe hain taaki path issue khatam ho
+    local_img_path = f"drivers_images/{leader_code}.png"
+    img_b64 = ""
+    if os.path.exists(local_img_path):
+        with open(local_img_path, "rb") as f:
+            img_b64 = base64.b64encode(f.read()).decode()
+            img_src = f"data:image/png;base64,{img_b64}"
+    else:
+        img_src = OFFICIAL_F1_IMAGES.get(leader_code, "https://media.formula1.com/d_driver_fallback_image.png")
+
     with st.popover("WDC Leader Profile", use_container_width=True):
         st.markdown("<h3 style='color:#FF1801; text-align: center;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
         st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True)
+        
     st.markdown(f"""
     <div class='driver-card' style='margin-top: -65px;'>
-        <img src='{get_driver_image(leader_code)}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
+        <img src='{img_src}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
         <div class='data-section'>
             <div class='title-small'>WDC CONTENDER</div>
             <div class='driver-name'>{leader_name}</div>
