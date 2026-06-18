@@ -193,7 +193,7 @@ st.markdown(
         gap: 16px !important;
     }
     
-    /* Premium Minimalist Paddock Box Grid System */
+    /* Premium Minimalist Paddock Box Grid System - Updated to match 115px peak height */
     .paddock-box {
         background: #181820 !important;
         border-radius: 10px !important; 
@@ -205,8 +205,8 @@ st.markdown(
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 95px;
-        max-height: 95px;
+        min-height: 115px !important;  /* Changed from 95px to 115px */
+        max-height: 115px !important;  /* Changed from 95px to 115px */
         box-sizing: border-box;
     }
     .paddock-box:hover {
@@ -231,7 +231,7 @@ st.markdown(
         box-shadow: 0 0 15px rgba(39, 244, 210, 0.4) !important;
     }
     
-    /* ==================== 🛠️ UNIFIED SELECTBOX CARD 🛠️ ==================== */
+    /* ==================== 🛠️ UNIFIED SELECTBOX CARD (REALIGNED) 🛠️ ==================== */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"] {
         background: #181820 !important;
         border: 1px solid rgba(255, 255, 255, 0.04) !important;
@@ -240,10 +240,10 @@ st.markdown(
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-end !important;
-        min-height: 95px !important;
-        max-height: 95px !important;
+        min-height: 115px !important; /* Raised to match Column 1 */
+        max-height: 115px !important; /* Raised to match Column 1 */
         padding: 12px 16px 12px 16px !important;
-        margin-top: 20px !important; 
+        margin-top: 0px !important;    /* REMOVED the 20px gap pushing it down */
         box-sizing: border-box !important;
         position: relative !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -252,7 +252,7 @@ st.markdown(
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]::before {
         content: "SELECT GRAND PRIX" !important;
         position: absolute !important;
-        top: 15px !important;
+        top: 22px !important;          /* Repositioned slightly lower for clean spacing */
         left: 0 !important;
         width: 100% !important;
         text-align: center !important;
