@@ -322,19 +322,16 @@ with row1_cols[0]:
     live_wdc_df = fetch_live_wdc_standings()
     leader_name = live_wdc_df.iloc[0]["Driver"] if not live_wdc_df.empty else "Kimi Antonelli"
     leader_team = live_wdc_df.iloc[0]["Team"] if not live_wdc_df.empty else "Mercedes"
-    leader_code = "ANT"
     border_color = TEAM_COLORS.get(leader_team, "#FF1801")
+
+    # Mapping se dynamic code fetch karo
+    img_src = get_driver_image(leader_name)
 
     # CSS HACK: Popover ko card ke upar transparent karke baitha rahe hain
     st.markdown("""
     <style>
     div[data-testid="stPopover"] {
-        position: absolute;
-        width: 100%;
-        height: 80px;
-        z-index: 99;
-        opacity: 0;
-        cursor: pointer;
+        position: absolute; width: 100%; height: 80px; z-index: 99; opacity: 0; cursor: pointer;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -343,10 +340,10 @@ with row1_cols[0]:
         st.markdown("<h3 style='color:#FF1801;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
         st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True)
 
-    # Permanent Card (Jo dikhega)
+    # Permanent Card
     st.markdown(f"""
     <div class='driver-card'>
-        <img src='{get_driver_image(leader_code)}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
+        <img src='{img_src}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
         <div class='data-section'>
             <div class='title-small'>WDC CONTENDER</div>
             <div class='driver-name'>{leader_name}</div>
