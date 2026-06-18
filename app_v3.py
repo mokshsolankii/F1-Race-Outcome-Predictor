@@ -289,7 +289,7 @@ row1_cols = st.columns(4)
 with row1_cols[0]:
     live_wdc_df = fetch_live_wdc_standings()
     
-    # 100% Dynamic Leader Extraction
+    # Dynamic Metadata Extraction
     if not live_wdc_df.empty:
         leader_name = live_wdc_df.iloc[0]["Driver"]
         leader_team = live_wdc_df.iloc[0]["Team"]
@@ -299,7 +299,7 @@ with row1_cols[0]:
         
     accent_color = TEAM_COLORS.get(leader_team, "#27F4D2")
     
-    # Secure Local Image Base64 Encoding
+    # Base64 Image handling safely
     import base64
     import os
     driver_b64_stream = ""
@@ -309,61 +309,82 @@ with row1_cols[0]:
     else:
         driver_b64_stream = "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png"
 
-    # Injecting precise CSS overrides to morph the Popover trigger button into the custom card
+    # Injecting CSS that creates a stacked sandwich structure inside the Column bounds
     st.markdown("""
     <style>
-    /* Direct targeting of the first column's popover structural parent */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] {
-        width: 100% !important;
+    /* 1. Base custom designer card */
+    .wdc-premium-card {
+        background: #181820;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        min-height: 95px;
+        height: 95px;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* Restyling the native button to match our premium UI panel design */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button {
-        width: 100% !important;
-        background: #181820 !important;
-        border: 1px solid rgba(255, 255, 255, 0.04) !important;
-        border-radius: 10px !important;
-        padding: 12px 16px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        text-align: left !important;
-        color: inherit !important;
-    }
-    /* Hover Glow Effect directly mapped to the structural element */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:hover {
+    
+    /* Hover state on the visual card container itself */
+    div[data-testid="stColumn"]:nth-of-type(1):hover .wdc-premium-card {
         border-color: #FF1801 !important;
         box-shadow: 0 0 18px rgba(255, 24, 1, 0.4) !important;
         background: #1c1c26 !important;
     }
-    /* Fixing layout active states */
+
+    /* 2. Formulating the Popover block setup strictly pinned inside this column */
+    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 95px !important;
+        z-index: 5 !important;
+    }
+
+    /* 3. Turn the native click button completely invisible but covering the whole card area */
+    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button {
+        width: 100% !important;
+        height: 95px !important;
+        background: transparent !important;
+        border: none !important;
+        color: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        cursor: pointer !important;
+    }
+    
+    /* Clean overrides for active button states */
     div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:focus,
     div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:active {
-        border-color: #FF1801 !important;
-        box-shadow: 0 0 18px rgba(255, 24, 1, 0.4) !important;
-        background: #181820 !important;
-        color: inherit !important;
+        background: transparent !important;
+        border: none !important;
+        color: transparent !important;
+        box-shadow: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Creating the popover block. The label itself contains our raw HTML UI skeleton.
-    card_label_html = f"""
-    <div style="display: flex; align-items: center; pointer-events: none; width: 100%;">
+    # Layer A: The invisible popover click trigger (Sits perfectly on top)
+    with st.popover("Invisible Overlay Trigger", use_container_width=True):
+        st.markdown("<h3 style='color:#FF1801; text-align: center; font-weight: 600;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#888; text-align: center; margin-top:-10px; font-size:0.9em; margin-bottom:15px;'>Official 2026 Rankings</p>", unsafe_allow_html=True)
+        st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True, height=400)
+
+    # Layer B: Premium Static HTML Render Card (Sits right below it, receiving interactions)
+    st.markdown(f"""
+    <div class="wdc-premium-card">
         <img src="{driver_b64_stream}" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; margin-right: 14px;" />
-        <div style="display: flex; flex-direction: column; justify-content: center;">
-            <div style="color: #888888; font-size: 0.7em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2;">WDC LEADER</div>
-            <div style="color: #FFFFFF; font-size: 1.15em; font-weight: bold; margin: 2px 0; line-height: 1.2;">{leader_name}</div>
-            <div style="border-left: 3px solid {accent_color}; padding-left: 8px; font-size: 0.85em; color: #BBBBBB; line-height: 1.2; margin-top: 2px;">{leader_team}</div>
+        <div style="display: flex; flex-direction: column; justify-content: center; text-align: left !important;">
+            <div style="color: #888888; font-size: 0.7em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">WDC LEADER</div>
+            <div style="color: #FFFFFF; font-size: 1.15em; font-weight: bold; margin: 2px 0;">{leader_name}</div>
+            <div style="border-left: 3px solid {accent_color}; padding-left: 8px; font-size: 0.85em; color: #BBBBBB; margin-top: 2px;">{leader_team}</div>
         </div>
     </div>
-    """
-
-    with st.popover(card_label_html, use_container_width=True):
-        st.markdown("<h3 style='color:#FF1801; text-align: center; font-weight: 600;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='color:#888; text-align: center; margin-top:-10px; font-size:0.9em; margin-bottom:15px;'>Official Rankings</p>", unsafe_allow_html=True)
-        st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True, height=400)
+    """, unsafe_allow_html=True)
 
 with row1_cols[1]:
     # Custom container styling wrapped over a clean Streamlit Dropdown selector
