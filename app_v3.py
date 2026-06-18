@@ -120,7 +120,7 @@ st.markdown(
         color: #F3F4F6 !important;
         border: 1px solid rgba(255, 255, 255, 0.03) !important;
         border-radius: 16px !important;
-        padding: 12px 16px !important;
+        padding: 18px 16px !important;
         width: 100% !important;
         text-align: center !important;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45) !important;
@@ -238,24 +238,27 @@ with row1_cols[0]:
     leader_name = live_wdc_df.iloc[0]["Driver"] if not live_wdc_df.empty else "Kimi Antonelli"
     leader_team = live_wdc_df.iloc[0]["Team"] if not live_wdc_df.empty else "Mercedes"
     
-    # Custom HTML styling for layout alignment inside the button card
-    wdc_leader_html = f"""
-    <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left !important; min-height: 58px;'>
-        <div style='text-align: left !important;'>
-            <span style='color: #FF1801; font-size: 0.72em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;'>WDC Standings</span>
-            <h3 style='margin: 1px 0 !important; color: #FFFFFF; font-size: 1.05em; font-weight: 700; text-align: left !important; white-space: nowrap;'>{leader_name}</h3>
-            <span style='color: #888888; font-size: 0.8em; font-weight: 500;'>{leader_team}</span>
-        </div>
-        <div style='display: flex; align-items: center;'>
-            <img src='https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png' 
-                 style='height: 52px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); margin-left: 4px;' />
-        </div>
-    </div>
-    """
-    
-    with st.popover(wdc_leader_html, use_container_width=True):
+    # Clean up title initialization structure for popover
+    with st.popover(f"👤 WDC Leader: {leader_name}", use_container_width=True):
         st.markdown("<h3 style='color:#FF1801; text-align: center;'>🏆 Live Drivers Championship Standings</h3>", unsafe_allow_html=True)
         st.markdown("---")
+        
+        # Leader Summary Drawer View
+        lead_cols = st.columns([2, 1])
+        with lead_cols[0]:
+            st.markdown(f"""
+            <div style='text-align: left !important; padding-top: 10px;'>
+                <span style='color: #FF1801; font-size: 0.85em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;'>CURRENT WDC LEADER</span>
+                <h2 style='margin: 5px 0 !important; color: #FFFFFF; font-size: 1.8em; text-align: left !important;'>{leader_name}</h2>
+                <span style='color: #27F4D2; font-size: 1.1em; font-weight: 500;'>🏎️ {leader_team}</span>
+            </div>
+            """, unsafe_allow_html=True)
+        with lead_cols[1]:
+            st.image("https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png", width=120)
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Comprehensive Standings Database List
         st.dataframe(
             live_wdc_df.set_index("Pos"), 
             use_container_width=True,
