@@ -282,6 +282,8 @@ for i, event in enumerate(F1_2026_SCHEDULE):
         default_index = i
         break
 
+race_name = next_race_name
+
 races_list = [f"Round {e['round']}: {e['race']}" for e in F1_2026_SCHEDULE]
 
 # ==================== ROW 1 CONSOLE INTERFACES ====================
