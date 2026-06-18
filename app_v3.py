@@ -5,6 +5,8 @@ import os
 import base64
 from datetime import datetime
 
+# ==================== 1. HELPER FUNCTIONS & MAPPINGS (DEFINED FIRST) ====================
+
 @st.cache_data(ttl=3600)  # Data stays cached for 1 hour so the app remains blazing fast
 def fetch_live_wdc_standings():
     # --- METHOD 1: Try Live Ergast/OpenF1 API ---
@@ -63,7 +65,109 @@ def fetch_live_wdc_standings():
             "Points": [156, 115, 106, 75, 73, 68, 55, 41, 34, 28, 18, 16, 13, 6, 5, 3, 2, 1, 0, 0, 0, 0]
         })
 
-# Set page config for a widescreen racing dashboard layout
+# Official Fallbacks Mapping System
+OFFICIAL_F1_IMAGES = {
+    "RUS": "https://media.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png",
+    "HAM": "https://media.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png",
+    "NOR": "https://media.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png",
+    "PIA": "https://media.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png",
+    "LEC": "https://media.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png",
+    "VER": "https://media.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png",
+    "GAS": "https://media.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png",
+    "ANT": "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png"
+}
+
+TEAM_COLORS = {
+    "Mercedes": "#27F4D2", "Mercedes-AMG Petronas F1 Team": "#27F4D2",
+    "Ferrari": "#E8002D", "Scuderia Ferrari HP": "#E8002D",
+    "McLaren": "#FF8000", "McLaren F1 Team": "#FF8000",
+    "Red Bull Racing": "#3671C6", "Oracle Red Bull Racing": "#3671C6",
+    "Alpine": "#FF87BC", "BWT Alpine F1 Team": "#FF87BC",
+    "Racing Bulls": "#66C2FF", "Visa Cash App RB F1 Team": "#66C2FF", "Visa Cash App Racing Bulls F1 Team": "#66C2FF",
+    "Haas": "#B6BABD", "MoneyGram Haas F1 Team": "#B6BABD", "TGR Haas F1 Team": "#B6BABD",
+    "Cadillac": "#FFFFFF", "Cadillac Racing": "#FFFFFF",
+    "Audi": "#F51A4A", "Kick Sauber": "#F51A4A", "Stake F1 Team Kick Sauber": "#F51A4A",
+    "Aston Martin": "#229971", "Aston Martin Aramco F1 Team": "#229971",
+    "Williams": "#64C4FF", "Williams Racing": "#64C4FF", "Atlassian Williams F1 Team": "#64C4FF"
+}
+
+TEAM_LOGOS_MAPPING = {
+    "Mercedes": "team_logos/mercedes.png", "Mercedes-AMG Petronas F1 Team": "team_logos/mercedes.png",
+    "Ferrari": "team_logos/ferrari.png", "Scuderia Ferrari HP": "team_logos/ferrari.png",
+    "McLaren": "team_logos/mclaren.png", "McLaren F1 Team": "team_logos/mclaren.png",
+    "Red Bull Racing": "team_logos/redblue.png" if os.path.exists("team_logos/redblue.png") else "team_logos/redbull.png", 
+    "Oracle Red Bull Racing": "team_logos/redbull.png",
+    "Alpine": "team_logos/alpine.png", "BWT Alpine F1 Team": "team_logos/alpine.png",
+    "Racing Bulls": "team_logos/rb.png", "Visa Cash App RB F1 Team": "team_logos/rb.png", "Visa Cash App Racing Bulls F1 Team": "team_logos/rb.png",
+    "Haas": "team_logos/haas.png", "MoneyGram Haas F1 Team": "team_logos/haas.png", "TGR Haas F1 Team": "team_logos/haas.png",
+    "Cadillac": "team_logos/cadillac.png", "Cadillac Racing": "team_logos/cadillac.png",
+    "Audi": "team_logos/audi.png", "Kick Sauber": "team_logos/audi.png",
+    "Aston Martin": "team_logos/astonmartin.png", "Aston Martin Aramco F1 Team": "team_logos/astonmartin.png",
+    "Williams": "team_logos/williams.png", "Williams Racing": "team_logos/williams.png", "Atlassian Williams F1 Team": "team_logos/williams.png"
+}
+
+def get_driver_image(driver_code):
+    local_path = f"drivers_images/{driver_code}.png"
+    if os.path.exists(local_path):
+        try:
+            with open(local_path, "rb") as img_file:
+                b64_string = base64.b64encode(img_file.read()).decode()
+            return f"data:image/png;base64,{b64_string}"
+        except Exception:
+            pass
+    return OFFICIAL_F1_IMAGES.get(driver_code, "https://media.formula1.com/d_driver_fallback_image.png")
+
+def get_base64_logo_html(team_name, border_color, centered=False):
+    target_path = TEAM_LOGOS_MAPPING.get(team_name, "")
+    if not os.path.exists(target_path):
+        clean_key = team_name.split()[0].lower()
+        if "williams" in team_name.lower(): clean_key = "williams"
+        elif "haas" in team_name.lower(): clean_key = "haas"
+        elif "alpine" in team_name.lower(): clean_key = "alpine"
+        elif "racing" in team_name.lower() and "bulls" in team_name.lower(): clean_key = "rb"
+        if os.path.exists("team_logos"):
+            for filename in os.listdir("team_logos"):
+                if clean_key in filename.lower() and filename.endswith(".png"):
+                    target_path = f"team_logos/{filename}"
+                    break
+    if os.path.exists(target_path):
+        with open(target_path, "rb") as img_file:
+            b64_string = base64.b64encode(img_file.read()).decode()
+        logo_height = "38px" if "mclaren" in team_name.lower() else "20px"
+        if centered:
+            return f"""<div style='display: inline-flex; align-items: center; justify-content: center; text-align: center !important; width: 100%; height: 38px;'><img src='data:image/png;base64,{b64_string}' style='height: {logo_height}; width: auto; margin-right: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));' /> <span style='font-size: 1em; font-weight: 500; color: #F3F4F6;'>{team_name}</span></div>"""
+        else:
+            return f"""<div style='border-left: 6px solid {border_color}; padding-left: 10px; display: inline-flex; align-items: center; justify-content: flex-start; text-align: left !important; width: 100%; height: 38px;'><img src='data:image/png;base64,{b64_string}' style='height: {logo_height}; width: auto; margin-right: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));' /> <span style='font-size: 1em; font-weight: 500; color: #F3F4F6;'>{team_name}</span></div>"""
+    align_style = "text-align: center !important;" if centered else f"border-left: 6px solid {border_color}; padding-left: 10px; text-align: left !important;"
+    return f"<div style='{align_style}'>{team_name}</div>"
+
+TRACK_METRICS = {
+    "Australia": {"name": "Albert Park Circuit", "weather": "☀️ Sunny | Track Temp: 34°C"},
+    "China": {"name": "Shanghai Circuit", "weather": "☁️ Overcast | Track Temp: 22°C"},
+    "Japan": {"name": "Suzuka Racing Course", "weather": "☀️ Clear | Track Temp: 29°C"},
+    "Bahrain": {"name": "Bahrain Circuit", "weather": "🌙 Night Race | Track Temp: 27°C"},
+    "Saudi Arabia": {"name": "Jeddah Corniche", "weather": "🌙 Night Race | Track Temp: 28°C"},
+    "Miami": {"name": "Miami Autodrome", "weather": "🌤️ Humid | Track Temp: 41°C"},
+    "Canada": {"name": "Circuit Gilles-Villeneuve", "weather": "🌤️ Breezy | Track Temp: 26°C"},
+    "Monaco": {"name": "Circuit de Monaco", "weather": "☀️ Clear | Track Temp: 32°C"},
+    "Spain (Barcelona)": {"name": "Circuit de Catalunya", "weather": "☀️ Hot | Track Temp: 39°C"},
+    "Austria": {"name": "Red Bull Ring (Spielberg)", "weather": "🌤️ Part Cloud | Track Temp: 28°C"},
+    "Great Britain": {"name": "Silverstone Circuit", "weather": "🌧️ Light Drizzle | Track Temp: 19°C"},
+    "Belgium": {"name": "Spa-Francorchamps", "weather": "☁️ Cloudy | Track Temp: 18°C"},
+    "Netherlands": {"name": "Circuit Zandvoort", "weather": "💨 Windy | Track Temp: 21°C"},
+    "Italy": {"name": "Autodromo Nazionale Monza", "weather": "☀️ Very Hot | Track Temp: 42°C"},
+    "Azerbaijan": {"name": "Baku City Circuit", "weather": "🌤️ Clear | Track Temp: 30°C"},
+    "Singapore": {"name": "Marina Bay Street Circuit", "weather": "🌧️ Humid & Wet | Track Temp: 29°C"},
+    "United States": {"name": "Circuit of the Americas", "weather": "☀️ Sunny | Track Temp: 37°C"},
+    "Mexico": {"name": "Autódromo Hermanos Rodríguez", "weather": "🌤️ Thin Air | Track Temp: 33°C"},
+    "Brazil": {"name": "Autódromo José Carlos Pace (Interlagos)", "weather": "🌧️ Unpredictable | Track Temp: 25°C"},
+    "Las Vegas": {"name": "Las Vegas Strip Circuit", "weather": "🌙 Cold Night | Track Temp: 14°C"},
+    "Qatar": {"name": "Lusail International Circuit", "weather": "🌙 Windy Night | Track Temp: 31°C"},
+    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "🌙 Twlight Race | Track Temp: 28°C"}
+}
+
+# ==================== 2. APP PAGE CONFIGURATION ====================
+
 st.set_page_config(page_title="PaddockPulse", page_icon="🏎️", layout="wide")
 
 # Custom global UI overrides for an elite F1 Telemetry Dashboard
@@ -150,97 +254,21 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Official Fallbacks Mapping System
-OFFICIAL_F1_IMAGES = {
-    "RUS": "https://media.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png",
-    "HAM": "https://media.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png",
-    "NOR": "https://media.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png",
-    "PIA": "https://media.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png",
-    "LEC": "https://media.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png",
-    "VER": "https://media.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png",
-    "GAS": "https://media.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png",
-    "ANT": "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png"
-}
+@st.cache_resource
+def load_model_bundle():
+    model_path = "f1_model_v3.pkl"
+    if not os.path.exists(model_path): return None
+    with open(model_path, "rb") as f: return pickle.load(f)
 
-TEAM_COLORS = {
-    "Mercedes": "#27F4D2", "Mercedes-AMG Petronas F1 Team": "#27F4D2",
-    "Ferrari": "#E8002D", "Scuderia Ferrari HP": "#E8002D",
-    "McLaren": "#FF8000", "McLaren F1 Team": "#FF8000",
-    "Red Bull Racing": "#3671C6", "Oracle Red Bull Racing": "#3671C6",
-    "Alpine": "#FF87BC", "BWT Alpine F1 Team": "#FF87BC",
-    "Racing Bulls": "#66C2FF", "Visa Cash App RB F1 Team": "#66C2FF", "Visa Cash App Racing Bulls F1 Team": "#66C2FF",
-    "Haas": "#B6BABD", "MoneyGram Haas F1 Team": "#B6BABD", "TGR Haas F1 Team": "#B6BABD",
-    "Cadillac": "#FFFFFF", "Cadillac Racing": "#FFFFFF",
-    "Audi": "#F51A4A", "Kick Sauber": "#F51A4A", "Stake F1 Team Kick Sauber": "#F51A4A",
-    "Aston Martin": "#229971", "Aston Martin Aramco F1 Team": "#229971",
-    "Williams": "#64C4FF", "Williams Racing": "#64C4FF", "Atlassian Williams F1 Team": "#64C4FF"
-}
+bundle = load_model_bundle()
+if bundle is None: st.stop()
+model, ALL_FEATURES = bundle["model"], bundle["features"]
 
-TEAM_LOGOS_MAPPING = {
-    "Mercedes": "team_logos/mercedes.png", "Mercedes-AMG Petronas F1 Team": "team_logos/mercedes.png",
-    "Ferrari": "team_logos/ferrari.png", "Scuderia Ferrari HP": "team_logos/ferrari.png",
-    "McLaren": "team_logos/mclaren.png", "McLaren F1 Team": "team_logos/mclaren.png",
-    "Red Bull Racing": "team_logos/redblue.png" if os.path.exists("team_logos/redblue.png") else "team_logos/redbull.png", 
-    "Oracle Red Bull Racing": "team_logos/redbull.png",
-    "Alpine": "team_logos/alpine.png", "BWT Alpine F1 Team": "team_logos/alpine.png",
-    "Racing Bulls": "team_logos/rb.png", "Visa Cash App RB F1 Team": "team_logos/rb.png", "Visa Cash App Racing Bulls F1 Team": "team_logos/rb.png",
-    "Haas": "team_logos/haas.png", "MoneyGram Haas F1 Team": "team_logos/haas.png", "TGR Haas F1 Team": "team_logos/haas.png",
-    "Cadillac": "team_logos/cadillac.png", "Cadillac Racing": "team_logos/cadillac.png",
-    "Audi": "team_logos/audi.png", "Kick Sauber": "team_logos/audi.png",
-    "Aston Martin": "team_logos/astonmartin.png", "Aston Martin Aramco F1 Team": "team_logos/astonmartin.png",
-    "Williams": "team_logos/williams.png", "Williams Racing": "team_logos/williams.png", "Atlassian Williams F1 Team": "team_logos/williams.png"
-}
+# --- Header Branding ---
+st.markdown("<h1 style='color: #FF1801; font-weight: bold; margin-top: -10px; margin-bottom: 2px;'>Formula 1 Race Outcome Predictor V3</h1>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 1.0em; color: #888888; margin-bottom: 25px;'>Powered by CatBoost & Dynamic Rolling Form Analytics</p>", unsafe_allow_html=True)
 
-def get_base64_logo_html(team_name, border_color, centered=False):
-    target_path = TEAM_LOGOS_MAPPING.get(team_name, "")
-    if not os.path.exists(target_path):
-        clean_key = team_name.split()[0].lower()
-        if "williams" in team_name.lower(): clean_key = "williams"
-        elif "haas" in team_name.lower(): clean_key = "haas"
-        elif "alpine" in team_name.lower(): clean_key = "alpine"
-        elif "racing" in team_name.lower() and "bulls" in team_name.lower(): clean_key = "rb"
-        if os.path.exists("team_logos"):
-            for filename in os.listdir("team_logos"):
-                if clean_key in filename.lower() and filename.endswith(".png"):
-                    target_path = f"team_logos/{filename}"
-                    break
-    if os.path.exists(target_path):
-        with open(target_path, "rb") as img_file:
-            b64_string = base64.b64encode(img_file.read()).decode()
-        logo_height = "38px" if "mclaren" in team_name.lower() else "20px"
-        if centered:
-            return f"""<div style='display: inline-flex; align-items: center; justify-content: center; text-align: center !important; width: 100%; height: 38px;'><img src='data:image/png;base64,{b64_string}' style='height: {logo_height}; width: auto; margin-right: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));' /> <span style='font-size: 1em; font-weight: 500; color: #F3F4F6;'>{team_name}</span></div>"""
-        else:
-            return f"""<div style='border-left: 6px solid {border_color}; padding-left: 10px; display: inline-flex; align-items: center; justify-content: flex-start; text-align: left !important; width: 100%; height: 38px;'><img src='data:image/png;base64,{b64_string}' style='height: {logo_height}; width: auto; margin-right: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));' /> <span style='font-size: 1em; font-weight: 500; color: #F3F4F6;'>{team_name}</span></div>"""
-    align_style = "text-align: center !important;" if centered else f"border-left: 6px solid {border_color}; padding-left: 10px; text-align: left !important;"
-    return f"<div style='{align_style}'>{team_name}</div>"
-
-TRACK_METRICS = {
-    "Australia": {"name": "Albert Park Circuit", "weather": "☀️ Sunny | Track Temp: 34°C"},
-    "China": {"name": "Shanghai Circuit", "weather": "☁️ Overcast | Track Temp: 22°C"},
-    "Japan": {"name": "Suzuka Racing Course", "weather": "☀️ Clear | Track Temp: 29°C"},
-    "Bahrain": {"name": "Bahrain Circuit", "weather": "🌙 Night Race | Track Temp: 27°C"},
-    "Saudi Arabia": {"name": "Jeddah Corniche", "weather": "🌙 Night Race | Track Temp: 28°C"},
-    "Miami": {"name": "Miami Autodrome", "weather": "🌤️ Humid | Track Temp: 41°C"},
-    "Canada": {"name": "Circuit Gilles-Villeneuve", "weather": "🌤️ Breezy | Track Temp: 26°C"},
-    "Monaco": {"name": "Circuit de Monaco", "weather": "☀️ Clear | Track Temp: 32°C"},
-    "Spain (Barcelona)": {"name": "Circuit de Catalunya", "weather": "☀️ Hot | Track Temp: 39°C"},
-    "Austria": {"name": "Red Bull Ring (Spielberg)", "weather": "🌤️ Part Cloud | Track Temp: 28°C"},
-    "Great Britain": {"name": "Silverstone Circuit", "weather": "🌧️ Light Drizzle | Track Temp: 19°C"},
-    "Belgium": {"name": "Spa-Francorchamps", "weather": "☁️ Cloudy | Track Temp: 18°C"},
-    "Netherlands": {"name": "Circuit Zandvoort", "weather": "💨 Windy | Track Temp: 21°C"},
-    "Italy": {"name": "Autodromo Nazionale Monza", "weather": "☀️ Very Hot | Track Temp: 42°C"},
-    "Azerbaijan": {"name": "Baku City Circuit", "weather": "🌤️ Clear | Track Temp: 30°C"},
-    "Singapore": {"name": "Marina Bay Street Circuit", "weather": "🌧️ Humid & Wet | Track Temp: 29°C"},
-    "United States": {"name": "Circuit of the Americas", "weather": "☀️ Sunny | Track Temp: 37°C"},
-    "Mexico": {"name": "Autódromo Hermanos Rodríguez", "weather": "🌤️ Thin Air | Track Temp: 33°C"},
-    "Brazil": {"name": "Autódromo José Carlos Pace (Interlagos)", "weather": "🌧️ Unpredictable | Track Temp: 25°C"},
-    "Las Vegas": {"name": "Las Vegas Strip Circuit", "weather": "🌙 Cold Night | Track Temp: 14°C"},
-    "Qatar": {"name": "Lusail International Circuit", "weather": "🌙 Windy Night | Track Temp: 31°C"},
-    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "🌙 Twlight Race | Track Temp: 28°C"}
-}
-
-# 2026 Complete F1 Schedule (All 24 Rounds)
+# Complete F1 Schedule Setup
 F1_2026_SCHEDULE = [
     {"round": 1, "race": "Australia", "date_str": "06-08 MAR", "date": datetime(2026, 3, 8)},
     {"round": 2, "race": "China", "date_str": "13-15 MAR", "date": datetime(2026, 3, 15)},
