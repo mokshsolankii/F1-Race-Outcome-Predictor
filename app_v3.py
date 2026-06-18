@@ -97,19 +97,20 @@ TEAM_COLORS = {
     "Cadillac F1 Team": "#FCE300", "Unknown": "#FFFFFF"
 }
 
+# Pure local filesystem tracking for logos to bypass network hotlinking blocks
 TEAM_LOGOS = {
-    "Mercedes": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/450px-Mercedes-Logo.svg.png",
-    "Ferrari": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Formula-One-team-logo.svg/330px-Ferrari-Formula-One-team-logo.svg.png",
-    "McLaren": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/McLaren_Racing_logo.svg/450px-McLaren_Racing_logo.svg.png",
-    "Red Bull Racing": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Red_Bull_Racing_logo.svg/450px-Red_Bull_Racing_logo.svg.png",
-    "BWT Alpine F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Alpine_F1_Team_Logo.svg/450px-Alpine_F1_Team_Logo.svg.png",
-    "Visa Cash App Racing Bulls F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Scuderia_AlphaTauri_Logo.svg/450px-Scuderia_AlphaTauri_Logo.svg.png", # Stable dynamic layout bull
-    "TGR Haas F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Haas_F1_Team_logo.svg/345px-Haas_F1_Team_logo.svg.png",
-    "Atlassian Williams F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Williams_Racing_logo.svg/450px-Williams_Racing_logo.svg.png",
-    "Aston Martin Aramco F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Aston_Martin_Lagonda_brand_logo.svg/450px-Aston_Martin_Lagonda_brand_logo.svg.png",
-    "Audi Revolut F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sauber_Motorsport_logo_2022.svg/450px-Sauber_Motorsport_logo_2022.svg.png",
-    "Cadillac F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Cadillac_logo.svg/450px-Cadillac_logo.svg.png",
-    "Unknown": "https://media.formula1.com/d_default_fallback_image.png"
+    "Mercedes": "team_logos/mercedes.png",
+    "Ferrari": "team_logos/ferrari.png",
+    "McLaren": "team_logos/mclaren.png",
+    "Red Bull Racing": "team_logos/redbull.png",
+    "BWT Alpine F1 Team": "team_logos/alpine.png",
+    "Visa Cash App Racing Bulls F1 Team": "team_logos/rb.png",
+    "TGR Haas F1 Team": "team_logos/haas.png",
+    "Atlassian Williams F1 Team": "team_logos/williams.png",
+    "Aston Martin Aramco F1 Team": "team_logos/astonmartin.png",
+    "Audi Revolut F1 Team": "team_logos/audi.png",
+    "Cadillac F1 Team": "team_logos/cadillac.png",
+    "Unknown": "team_logos/unknown.png"
 }
 
 @st.cache_resource
