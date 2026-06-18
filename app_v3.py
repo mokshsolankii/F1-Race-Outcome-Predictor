@@ -98,17 +98,17 @@ TEAM_COLORS = {
 }
 
 TEAM_LOGOS = {
-    "Mercedes": "https://media.formula1.com/content/dam/fom-website/teams/2026/mercedes-logo.png",
-    "Ferrari": "https://media.formula1.com/content/dam/fom-website/teams/2026/ferrari-logo.png",
-    "McLaren": "https://media.formula1.com/content/dam/fom-website/teams/2026/mclaren-logo.png",
-    "Red Bull Racing": "https://media.formula1.com/content/dam/fom-website/teams/2026/red-bull-racing-logo.png",
-    "BWT Alpine F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/alpine-logo.png",
-    "Visa Cash App Racing Bulls F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/rb-logo.png",
-    "TGR Haas F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/haas-logo.png",
-    "Atlassian Williams F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/williams-logo.png",
-    "Aston Martin Aramco F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/aston-martin-logo.png",
-    "Audi Revolut F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/sauber-logo.png",
-    "Cadillac F1 Team": "https://media.formula1.com/content/dam/fom-website/teams/2026/cadillac-logo.png",
+    "Mercedes": "https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-logo-blackmercedes-benzlogo-blackmercedes-benz-logomercedes-1701527503798vclt8.png",
+    "Ferrari": "https://www.pngplay.com/wp-content/uploads/13/Ferrari-Logo-PNG-HD-Quality.png",
+    "McLaren": "https://www.pngall.com/wp-content/uploads/15/Mclaren-Logo-PNG-Pic.png",
+    "Red Bull Racing": "https://www.pngall.com/wp-content/uploads/15/Red-Bull-Racing-Logo-PNG-Free-Image.png",
+    "BWT Alpine F1 Team": "https://www.pngall.com/wp-content/uploads/13/Alpine-Logo-PNG-Pic.png",
+    "Visa Cash App Racing Bulls F1 Team": "https://www.pngall.com/wp-content/uploads/15/Red-Bull-Racing-Logo-PNG-Image.png", # Fallback racing bull
+    "TGR Haas F1 Team": "https://www.pngall.com/wp-content/uploads/13/Haas-Logo-PNG-Pic.png",
+    "Atlassian Williams F1 Team": "https://www.pngall.com/wp-content/uploads/13/Williams-Logo-PNG-Images.png",
+    "Aston Martin Aramco F1 Team": "https://www.pngall.com/wp-content/uploads/13/Aston-Martin-Logo-PNG-Clipart.png",
+    "Audi Revolut F1 Team": "https://www.pngall.com/wp-content/uploads/13/Sauber-Logo.png",
+    "Cadillac F1 Team": "https://www.pngall.com/wp-content/uploads/13/Cadillac-Logo.png",
     "Unknown": "https://media.formula1.com/d_default_fallback_image.png"
 }
 
