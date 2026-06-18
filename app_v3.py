@@ -45,7 +45,7 @@ def fetch_live_wdc_standings():
     except Exception as scrape_error:
         # --- METHOD 3: 100% Validated 2026 Official Lineup Array Backup ---
         return pd.DataFrame({
-            "Pos": list(range(1, 23)),
+            "Pos": list(range(1, 22)),
             "Driver": [
                 "Kimi Antonelli", "Lewis Hamilton", "George Russell", "Charles Leclerc", "Lando Norris",
                 "Oscar Piastri", "Max Verstappen", "Pierre Gasly", "Isack Hadjar", "Liam Lawson",
@@ -246,7 +246,7 @@ with row1_cols[0]:
     leader_team = live_wdc_df.iloc[0]["Team"] if not live_wdc_df.empty else "Mercedes"
     
     with st.popover(f"👤 WDC Leader: {leader_name}", use_container_width=True):
-        st.markdown("<h3 style='color:#FF1801; text-align: center;'>🏆 Live Drivers Championship Standings</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='color:#FF1801; text-align: center;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
         st.markdown("---")
         
         lead_cols = st.columns([2, 1])
