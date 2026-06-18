@@ -102,6 +102,7 @@ st.markdown(
     [data-testid="stHorizontalBlock"] > div:hover {
         transform: translateY(-5px) !important;
         border-color: rgba(255, 24, 1, 0.2) !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.2) !important;
     }
     
     /* Pristine Center-Aligned Driver Images */
@@ -163,7 +164,7 @@ OFFICIAL_F1_IMAGES = {
     "GAS": "https://media.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png",
 }
 
-# Enhanced Mapping Matrix for Backward Compatibility
+# Mapping Matrix for Line Borders
 TEAM_COLORS = {
     "Mercedes": "#27F4D2", "Mercedes-AMG Petronas F1 Team": "#27F4D2",
     "Ferrari": "#E8002D", "Scuderia Ferrari HP": "#E8002D",
@@ -178,20 +179,34 @@ TEAM_COLORS = {
     "Williams": "#64C4FF", "Williams Racing": "#64C4FF"
 }
 
-# 🏁 Local Team Logos mapping mechanism to restore indicators seamlessly
-TEAM_LOGOS = {
-    "Mercedes": "drivers_images/mercedes_logo.png", "Mercedes-AMG Petronas F1 Team": "drivers_images/mercedes_logo.png",
-    "Ferrari": "drivers_images/ferrari_logo.png", "Scuderia Ferrari HP": "drivers_images/ferrari_logo.png",
-    "McLaren": "drivers_images/mclaren_logo.png", "McLaren F1 Team": "drivers_images/mclaren_logo.png",
-    "Red Bull Racing": "drivers_images/redbull_logo.png", "Oracle Red Bull Racing": "drivers_images/redbull_logo.png",
-    "Alpine": "drivers_images/alpine_logo.png", "BWT Alpine F1 Team": "drivers_images/alpine_logo.png",
-    "Racing Bulls": "drivers_images/rb_logo.png", "Visa Cash App RB F1 Team": "drivers_images/rb_logo.png",
-    "Haas": "drivers_images/haas_logo.png", "MoneyGram Haas F1 Team": "drivers_images/haas_logo.png",
-    "Cadillac": "drivers_images/cadillac_logo.png", "Cadillac Racing": "drivers_images/cadillac_logo.png",
-    "Audi": "drivers_images/audi_logo.png", "Kick Sauber": "drivers_images/audi_logo.png",
-    "Aston Martin": "drivers_images/aston_logo.png", "Aston Martin Aramco F1 Team": "drivers_images/aston_logo.png",
-    "Williams": "drivers_images/williams_logo.png", "Williams Racing": "drivers_images/williams_logo.png"
+# Explicitly added .png extensions to match the team_logos directory perfectly
+TEAM_LOGOS_MAPPING = {
+    "Mercedes": "team_logos/mercedes.png", "Mercedes-AMG Petronas F1 Team": "team_logos/mercedes.png",
+    "Ferrari": "team_logos/ferrari.png", "Scuderia Ferrari HP": "team_logos/ferrari.png",
+    "McLaren": "team_logos/mclaren.png", "McLaren F1 Team": "team_logos/mclaren.png",
+    "Red Bull Racing": "team_logos/redblue.png" if os.path.exists("team_logos/redblue.png") else "team_logos/redbull.png", 
+    "Oracle Red Bull Racing": "team_logos/redbull.png",
+    "Alpine": "team_logos/alpine.png", "BWT Alpine F1 Team": "team_logos/alpine.png",
+    "Racing Bulls": "team_logos/rb.png", "Visa Cash App RB F1 Team": "team_logos/rb.png",
+    "Haas": "team_logos/haas.png", "MoneyGram Haas F1 Team": "team_logos/haas.png",
+    "Cadillac": "team_logos/cadillac.png", "Cadillac Racing": "team_logos/cadillac.png",
+    "Audi": "team_logos/audi.png", "Kick Sauber": "team_logos/audi.png",
+    "Aston Martin": "team_logos/astonmartin.png", "Aston Martin Aramco F1 Team": "team_logos/astonmartin.png",
+    "Williams": "team_logos/williams.png", "Williams Racing": "team_logos/williams.png"
 }
+
+def get_verified_logo_path(team_name):
+    target_path = TEAM_LOGOS_MAPPING.get(team_name, "")
+    if os.path.exists(target_path):
+        return target_path
+    
+    # Smart string lookup logic in case of space or lowercase mismatch
+    clean_key = team_name.split()[0].lower()
+    if os.path.exists("team_logos"):
+        for filename in os.listdir("team_logos"):
+            if clean_key in filename.lower() and filename.endswith(".png"):
+                return f"team_logos/{filename}"
+    return None
 
 TRACK_METRICS = {
     "Australia": {"name": "Albert Park Circuit", "weather": "☀️ Sunny | Track Temp: 34°C"},
@@ -213,15 +228,6 @@ def get_driver_image(driver_code):
     if os.path.exists(local_path): 
         return local_path
     return OFFICIAL_F1_IMAGES.get(driver_code, "https://media.formula1.com/d_driver_fallback_image.png")
-
-# 🏁 Injecting a fallback helper to find logo cleanly
-def get_team_logo_html(team_name):
-    logo_path = TEAM_LOGOS.get(team_name, "")
-    if os.path.exists(logo_path):
-        with open(logo_path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
-        return f"<img src='data:image/png;base64,{encoded}' style='height:18px; margin: 0 8px; vertical-align:middle;' />"
-    return ""
 
 @st.cache_resource
 def load_model_bundle():
@@ -398,16 +404,24 @@ if trigger_prediction:
             st.markdown("<br><h3 style='margin-top: 25px;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
             
-            table_container_width = [1, 2, 4, 2]
             for idx, row in pred_df.iterrows():
-                row_cols = st.columns(table_container_width)
+                row_cols = st.columns([1, 2, 4, 2])
                 row_cols[0].markdown(f"**P{row['predicted_position']}**")
                 row_cols[1].markdown(row['_name'])
                 
-                # Render team colored border line ALONG WITH the base64 dynamic team logo image
-                logo_html = get_team_logo_html(row['team'])
+                # Fetching verified path dynamically WITH the .png strings parsed smoothly
+                logo_file_path = get_verified_logo_path(row['team'])
                 border_color = TEAM_COLORS.get(row['team'], '#FFFFFF')
-                row_cols[2].markdown(f"<div style='border-left: 6px solid {border_color}; padding-left: 12px; display: flex; align-items: center;'>{logo_html} {row['team']}</div>", unsafe_allow_html=True)
+                
+                with row_cols[2]:
+                    st.markdown(f"<div style='border-left: 6px solid {border_color}; padding-left: 12px; display: flex; align-items: center; justify-content: flex-start;'>", unsafe_allow_html=True)
+                    
+                    logo_inner_cols = st.columns([1, 4])
+                    with logo_inner_cols[0]:
+                        if logo_file_path and os.path.exists(logo_file_path):
+                            st.image(logo_file_path, width=25)
+                    with logo_inner_cols[1]:
+                        st.markdown(f"<span style='font-size:1em; font-weight:500; color:#F3F4F6; margin-left:-18px;'>{row['team']}</span>", unsafe_allow_html=True)
                 
                 row_cols[3].markdown(f"Grid: {int(row['grid_position'])}")
                 
