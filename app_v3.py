@@ -207,6 +207,7 @@ st.markdown(
         transform: translateY(-2px) !important; 
         border-color: rgba(255, 24, 1, 0.25) !important;
         background: #1c1c26 !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
     }
     
     /* ==================== 🛠️ 100% BULLETPROOF UNIFIED SELECTBOX CARD 🛠️ ==================== */
@@ -222,10 +223,11 @@ st.markdown(
         flex-direction: column !important;
         justify-content: flex-end !important; /* Pushes input field down dynamically */
         
-        /* Dimensions match paddock-box exactly */
+        /* Fixed matching alignment dimensions */
         min-height: 95px !important;
         max-height: 95px !important;
         padding: 12px 16px 12px 16px !important;
+        margin-top: 20px !important; /* Added precise nudge downward to align on exact base grid level */
         box-sizing: border-box !important;
         position: relative !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -266,11 +268,12 @@ st.markdown(
         margin-top: auto !important; /* Snaps input strictly to the bottom area safely */
     }
 
-    /* Unified Hover Interactions Synchronization */
+    /* Unified Hover Interactions Synchronization with High Gloss Red Glow */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]:hover {
         transform: translateY(-2px) !important;
-        border-color: rgba(255, 24, 1, 0.25) !important;
+        border-color: rgba(255, 24, 1, 0.4) !important;
         background: #1c1c26 !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
     }
     /* ======================================================================================= */
     
@@ -424,7 +427,7 @@ with row1_cols[0]:
     }
     .wdc-wrapper-box:hover .wdc-contender-card {
         border-color: #FF1801 !important;
-        box-shadow: 0 0 20px rgba(255, 24, 1, 0.3) !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
         background: #1c1c26 !important;
     }
     .wdc-wrapper-box:hover .wdc-3d-avatar {
@@ -446,12 +449,12 @@ with row1_cols[0]:
     """, unsafe_allow_html=True)
 
 with row1_cols[1]:
-    # Streamlit Selectbox Component (Heading & Layout Box handles implicitly now via pseudo-classes)
+    # Streamlit Selectbox Component (Heading, Position & Glow handled implicitly via custom css)
     selected_option = st.selectbox(
         "Select Grand Prix Hidden Base Label",
         options=races_list,
         index=default_index,
-        key="dashboard_gp_selector_v4_perfect"
+        key="dashboard_gp_selector_v5_perfected"
     )
     race_name = selected_option.split(": ")[-1]
 
