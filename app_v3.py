@@ -207,7 +207,8 @@ st.markdown(
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 85px;
+        min-height: 95px;
+        max-height: 95px;
         box-sizing: border-box;
     }
     .paddock-box:hover {
@@ -216,14 +217,19 @@ st.markdown(
         background: #1c1c26 !important;
     }
     
-    /* ==================== INJECTED FIX FOR SELECT GRAND PRIX CARD ==================== */
+    /* ==================== CRITICAL FIX FOR COLUMN 2 VERTICAL CONTAINER BLOCK ==================== */
+    /* Forces Streamlit's inner block containers inside Column 2 to have 0px gap to prevent misalignment */
+    div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stVerticalBlock"] {
+        gap: 0px !important;
+    }
+    
     .gp-unified-card {
         background: #181820 !important;
         border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-left: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-radius: 10px 10px 0 0 !important;
-        padding: 16px 20px 0px 20px !important; /* Perfect top and side alignment match */
+        padding: 14px 16px 2px 16px !important;
         height: 38px !important;
         box-sizing: border-box !important;
     }
@@ -242,10 +248,11 @@ st.markdown(
         border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-radius: 0 0 10px 10px !important;
-        padding: 0px 20px 16px 20px !important;
+        padding: 0px 16px 14px 16px !important;
         margin-top: 0px !important; 
-        height: 57px !important; /* 38px + 57px = 95px Exact Match! */
+        height: 57px !important; /* 38px + 57px = Exactly 95px Height Match */
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
+        box-sizing: border-box !important;
     }
     div[data-testid="stColumn"]:nth-of-type(2) label[data-testid="stWidgetLabel"] {
         display: none !important;
@@ -281,13 +288,13 @@ st.markdown(
         top: 0;
         left: 0;
         width: 100% !important;
-        height: 85px !important;
+        height: 95px !important;
         z-index: 10;
         opacity: 0 !important;
     }
     .popover-anchor div[data-testid="stPopover"] > button {
         width: 100% !important;
-        height: 85px !important;
+        height: 95px !important;
         border: none !important;
         background: transparent !important;
         cursor: pointer !important;
@@ -446,14 +453,14 @@ with row1_cols[0]:
     """, unsafe_allow_html=True)
 
 with row1_cols[1]:
-    # Simple top layout block mapping
+    # Custom Header Div
     st.markdown("""
     <div class="gp-unified-card">
         <div class="gp-card-label">SELECT GRAND PRIX</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Actual native widget tracking
+    # Streamlit Selectbox Component (Spacing Gap is now overridden via global CSS)
     selected_option = st.selectbox(
         "Select Grand Prix",
         options=races_list,
@@ -465,7 +472,7 @@ with row1_cols[1]:
 
 with row1_cols[2]:
     st.markdown(f"""
-    <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35; height: 95px;">
+    <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35;">
         <span style='color: #888888; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;'>Upcoming Live Weekend</span>
         <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'>🎯 {next_race_name}</strong>
         <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'>📅 {next_race_date_str}</span>
@@ -475,7 +482,7 @@ with row1_cols[2]:
 with row1_cols[3]:
     st.markdown("""
     <div class="interactive-wrapper popover-anchor">
-        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; height: 95px;">
+        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important;">
             <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Constructor standing</span>
             <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Expand team rankings</span>
         </div>
@@ -492,21 +499,21 @@ row2_cols = st.columns(3)
 with row2_cols[0]:
     track_info = TRACK_METRICS.get(race_name, {"name": "F1 Grand Prix Track", "weather": "Fetching Live Status..."})
     st.markdown(f"""
-    <div class="paddock-box" style="border-left: 4px solid #64C4FF; align-items: center; text-align: center !important;">
+    <div class="paddock-box" style="border-left: 4px solid #64C4FF; align-items: center; text-align: center !important; min-height: 85px; max-height: 85px;">
         <span style='font-size: 1.1em; font-weight: 600; color: #FFF;'>Circuit details</span>
         <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'>🗺️ {track_info['name']} • {track_info['weather']}</span>
     </div>
     """, unsafe_allow_html=True)
 
 with row2_cols[1]:
-    st.markdown('<div class="paddock-box" style="border-left: 4px solid #27F4D2; align-items: stretch; padding: 12px 14px;">', unsafe_allow_html=True)
+    st.markdown('<div class="paddock-box" style="border-left: 4px solid #27F4D2; align-items: stretch; padding: 12px 14px; min-height: 85px; max-height: 85px;">', unsafe_allow_html=True)
     trigger_prediction = st.button("🔮 Generate Grid Prediction", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with row2_cols[2]:
     st.markdown("""
     <div class="interactive-wrapper popover-anchor">
-        <div class="paddock-box" style="border-left: 4px solid #B6BABD; align-items: center; text-align: center !important;">
+        <div class="paddock-box" style="border-left: 4px solid #B6BABD; align-items: center; text-align: center !important; min-height: 85px; max-height: 85px;">
             <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Last race result</span>
             <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Click to open race summary</span>
         </div>
