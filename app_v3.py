@@ -187,6 +187,15 @@ st.markdown(
         gap: 16px !important;
     }
     
+    /* Base wrapper setup matching Box 1 structure layout perfectly */
+    .gp-align-wrapper {
+        position: relative !important;
+        width: 100% !important;
+        height: 115px !important;
+        display: flex !important;
+        align-items: flex-end !important;
+    }
+    
     /* Premium Minimalist Paddock Box Grid System */
     .paddock-box {
         background: #181820 !important;
@@ -211,29 +220,29 @@ st.markdown(
     }
     
     /* ==================== 🛠️ 100% BULLETPROOF UNIFIED SELECTBOX CARD 🛠️ ==================== */
-    /* Target Column 2's Streamlit widget container exclusively and transform it into the actual structural card */
+    /* Target Selectbox inside Column 2 and make it identical to Box 1's position settings */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"] {
         background: #181820 !important;
         border: 1px solid rgba(255, 255, 255, 0.04) !important;
         border-radius: 10px !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
         
-        /* Layout Configuration */
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-end !important; /* Pushes input field down dynamically */
+        justify-content: flex-end !important; 
         
-        /* Fixed matching alignment dimensions */
+        /* 1:1 Match with box 1 structural card dimensions */
+        width: 100% !important;
         min-height: 95px !important;
         max-height: 95px !important;
         padding: 12px 16px 12px 16px !important;
-        margin-top: 20px !important; /* Added precise nudge downward to align on exact base grid level */
+        margin-top: 0px !important; 
         box-sizing: border-box !important;
         position: relative !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
-    /* Injecting "SELECT GRAND PRIX" heading as an absolute CSS pseudo-element directly inside the widget card */
+    /* Injecting "SELECT GRAND PRIX" heading perfectly aligned inside the widget frame */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]::before {
         content: "SELECT GRAND PRIX" !important;
         position: absolute !important;
@@ -242,7 +251,6 @@ st.markdown(
         width: 100% !important;
         text-align: center !important;
         
-        /* Branding design typography styles */
         color: #888888 !important;
         font-size: 0.72rem !important;
         font-weight: 600 !important;
@@ -250,7 +258,7 @@ st.markdown(
         font-family: 'Titillium Web', 'Segoe UI', sans-serif !important;
     }
 
-    /* Completely terminate native label space blocks to ensure perfect layout ceiling room */
+    /* Completely hide native streamlit label spaces */
     div[data-testid="stColumn"]:nth-of-type(2) label[data-testid="stWidgetLabel"] {
         display: none !important;
         height: 0px !important;
@@ -258,20 +266,20 @@ st.markdown(
         padding: 0px !important;
     }
 
-    /* Precision positioning of actual dynamic internal select input container box */
+    /* Internal interactive select input inner styling */
     div[data-testid="stColumn"]:nth-of-type(2) div[role="combobox"] {
         background-color: rgba(255, 255, 255, 0.02) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         border-radius: 6px !important;
         color: #F3F4F6 !important;
         height: 40px !important;
-        margin-top: auto !important; /* Snaps input strictly to the bottom area safely */
+        margin-top: auto !important; 
     }
 
-    /* Unified Hover Interactions Synchronization with High Gloss Red Glow */
+    /* Absolute 1:1 Red Glow Interaction Override synchronized perfectly */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]:hover {
         transform: translateY(-2px) !important;
-        border-color: rgba(255, 24, 1, 0.4) !important;
+        border-color: #FF1801 !important;
         background: #1c1c26 !important;
         box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
     }
@@ -449,33 +457,40 @@ with row1_cols[0]:
     """, unsafe_allow_html=True)
 
 with row1_cols[1]:
-    # Streamlit Selectbox Component (Heading, Position & Glow handled implicitly via custom css)
+    # Wrapped inside matching gp-align-wrapper class block to perfectly replicate Box 1 layout heights and baseline structure
+    st.markdown('<div class="gp-align-wrapper">', unsafe_allow_html=True)
     selected_option = st.selectbox(
         "Select Grand Prix Hidden Base Label",
         options=races_list,
         index=default_index,
-        key="dashboard_gp_selector_v5_perfected"
+        key="dashboard_gp_selector_v6_perfected"
     )
+    st.markdown('</div>', unsafe_allow_html=True)
     race_name = selected_option.split(": ")[-1]
 
 with row1_cols[2]:
+    # Wrapped to standard structural display height baseline line match 
+    st.markdown('<div class="gp-align-wrapper">', unsafe_allow_html=True)
     st.markdown(f"""
-    <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35;">
+    <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35; width: 100%;">
         <span style='color: #888888; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;'>Upcoming Live Weekend</span>
         <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'>🎯 {next_race_name}</strong>
         <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'>📅 {next_race_date_str}</span>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row1_cols[3]:
+    st.markdown('<div class="gp-align-wrapper">', unsafe_allow_html=True)
     st.markdown("""
     <div class="interactive-wrapper popover-anchor">
-        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important;">
+        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; width: 100%;">
             <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Constructor standing</span>
             <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Expand team rankings</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     with st.popover("Constructor Window"):
         st.markdown("<h4 style='color:#FF1801;'>🏁 Constructors Championship Standings</h4>", unsafe_allow_html=True)
         wcc_data = pd.DataFrame({"Pos": [1, 2, 3, 4, 5], "Team": ["Mercedes", "Ferrari", "McLaren", "Red Bull Racing", "Cadillac"], "Points": [262, 190, 141, 89, 0]})
