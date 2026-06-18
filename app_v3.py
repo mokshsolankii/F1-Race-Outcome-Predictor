@@ -289,102 +289,51 @@ row1_cols = st.columns(4)
 with row1_cols[0]:
     live_wdc_df = fetch_live_wdc_standings()
     
-    # 100% Dynamic Data Extraction from the Live DataFrame
-    if not live_wdc_df.empty:
-        leader_name = live_wdc_df.iloc[0]["Driver"]
-        leader_team = live_wdc_df.iloc[0]["Team"]
-    else:
-        # Emergency absolute fallback if data is completely missing
-        leader_name = "Kimi Antonelli"
-        leader_team = "Mercedes"
-        
-    accent_color = TEAM_COLORS.get(leader_team, "#FF1801")
-    
-    # Dynamic 3-Letter Code Generator (e.g., "Kimi Antonelli" -> "ANT")
-    try:
-        if "ANTONELLI" in leader_name.upper():
-            leader_code = "ANT"
-        else:
-            # Fallback auto-generation logic from surname
-            leader_code = leader_name.split()[-1][:3].upper()
-    except:
-        leader_code = "ANT"
-
-    # Absolute Base64 Sandbox Local Image Stream Bypass System
-    local_img_path = f"drivers_images/{leader_code}.png"
+    # Simple Local Image Conversion
+    import base64
     driver_b64_stream = ""
-    
-    if os.path.exists(local_img_path):
-        try:
-            with open(local_img_path, "rb") as img_file:
-                driver_b64_stream = f"data:image/png;base64,{base64.b64encode(img_file.read()).decode()}"
-        except Exception:
-            driver_b64_stream = ""
+    if os.path.exists("drivers_images/ANT.png"):
+        with open("drivers_images/ANT.png", "rb") as f:
+            driver_b64_stream = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
+    else:
+        driver_b64_stream = "https://media.formula1.com/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png"
 
-    # If local image reading fails, fallback to official asset mapping URL securely
-    if not driver_b64_stream:
-        driver_b64_stream = OFFICIAL_F1_IMAGES.get(leader_code, "https://media.formula1.com/d_driver_fallback_image.png")
-
-    # CSS Injection specific to Box 1 structural integrity
+    # 1. Custom CSS inside the Column to make a rigid, static card layout
     st.markdown("""
     <style>
-    /* Popover target wrapper configuration */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] {
-        width: 100% !important;
-        background: transparent !important;
+    .wdc-custom-card {
+        background: #181820;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        min-height: 95px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
     }
-    /* Style the popover trigger button to become the actual visual box card */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button {
-        width: 100% !important;
-        min-height: 95px !important;
-        background: #181820 !important;
-        border: 1px solid rgba(255, 255, 255, 0.04) !important;
-        border-radius: 10px !important;
-        padding: 12px 16px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        display: block !important;
-        text-align: left !important;
-    }
-    /* Premium Hover Glow Effect */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:hover {
+    .wdc-custom-card:hover {
         border-color: #FF1801 !important;
-        box-shadow: 0 0 18px rgba(255, 24, 1, 0.45) !important;
-        background: #1c1c26 !important;
-    }
-    /* Clean up default active focus borders */
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:focus,
-    div[data-testid="stColumn"]:nth-of-type(1) div[data-testid="stPopover"] > button:active {
-        border-color: #FF1801 !important;
-        color: inherit !important;
-        background: #181820 !important;
+        box-shadow: 0 0 15px rgba(255, 24, 1, 0.35) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Master popover element execution
-    with st.popover("WDC View Launcher", use_container_width=True):
-        st.markdown("<h3 style='color:#FF1801; text-align: center; font-weight: 600;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='color:#888; text-align: center; margin-top:-10px; font-size:0.9em; margin-bottom:15px;'>Official 2026 Season Rankings</p>", unsafe_allow_html=True)
-        
-        # Pure 22 driver standings displayed flawlessly on expand click
-        st.dataframe(
-            live_wdc_df.set_index("Pos"), 
-            use_container_width=True,
-            height=400
-        )
-
-    # HTML Matrix Overlay Render - Completely Dynamic & Tied to Repo/Device Files
+    # 2. Render Card UI statically first so it NEVER leaks or breaks bounds
     st.markdown(f"""
-    <div style='position: relative; margin-top: -95px; pointer-events: none; display: flex; align-items: center; width: 100%; height: 95px; padding: 0 16px; box-sizing: border-box;'>
-        <img src='{driver_b64_stream}' style='width: 62px; height: 62px; border-radius: 50%; object-fit: cover; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);' />
-        <div style='margin-left: 16px; display: flex; flex-direction: column; justify-content: center;'>
-            <div style='color: #888888; font-size: 0.7em; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; text-align: left !important;'>WDC LEADER</div>
-            <div style='color: #FFFFFF; font-size: 1.25em; font-weight: bold; margin: 2px 0; text-align: left !important;'>{leader_name}</div>
-            <div style='border-left: 3px solid {accent_color}; padding-left: 8px; font-size: 0.85em; color: #BBBBBB; font-weight: 500; text-align: left !important; margin-top: 2px;'>{leader_team}</div>
+    <div class="wdc-custom-card">
+        <img src="{driver_b64_stream}" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; margin-right: 14px;" />
+        <div style="display: flex; flex-direction: column; justify-content: center; text-align: left !important;">
+            <div style="color: #888888; font-size: 0.7em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; text-align: left !important;">WDC LEADER</div>
+            <div style="color: #FFFFFF; font-size: 1.15em; font-weight: bold; margin: 1px 0; text-align: left !important;">Kimi Antonelli</div>
+            <div style="border-left: 3px solid #27F4D2; padding-left: 8px; font-size: 0.85em; color: #BBBBBB; text-align: left !important;">Mercedes</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # 3. Native small button right beneath it for opening standings safely without breaking UI layouts
+    with st.popover("📊 View Full Standings", use_container_width=True):
+        st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True, height=350)
 
 with row1_cols[1]:
     # Custom container styling wrapped over a clean Streamlit Dropdown selector
