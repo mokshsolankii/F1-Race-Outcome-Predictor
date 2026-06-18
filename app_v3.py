@@ -84,64 +84,54 @@ st.markdown(
         font-family: 'Titillium Web', 'Segoe UI', sans-serif !important;
     }
     
-    /* Center aligning container blocks */
-    div[data-testid="stVerticalBlock"] {
-        align-items: center !important;
-        text-align: center !important;
+    /* Clear default padding inside horizontal layout rows */
+    [data-testid="stHorizontalBlock"] {
+        gap: 16px !important;
     }
     
-    /* Premium Minimalist 3D Podium Cards & Grid Rows Compressed Layout */
-    [data-testid="stHorizontalBlock"] > div {
+    /* Premium Minimalist Paddock Box Grid System */
+    .paddock-box {
         background: #181820 !important;
         border-radius: 10px !important; 
-        padding: 8px 12px !important;    
-        border: 1px solid rgba(255, 255, 255, 0.03) !important;
+        padding: 16px 20px !important;    
+        border: 1px solid rgba(255, 255, 255, 0.04) !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 85px;
+        box-sizing: border-box;
     }
-    [data-testid="stHorizontalBlock"] > div:hover {
+    .paddock-box:hover {
         transform: translateY(-2px) !important; 
-        border-color: rgba(255, 24, 1, 0.2) !important;
+        border-color: rgba(255, 24, 1, 0.25) !important;
+        background: #1c1c26 !important;
     }
     
-    /* Driver Card Hover Glow Effect */
-    .driver-card {
-        background: #181820;
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: all 0.3s ease;
-        cursor: pointer;
+    /* Super clean container layout for Interactive Popover buttons */
+    .interactive-wrapper {
+        position: relative;
         width: 100%;
     }
-    .driver-card:hover {
-        box-shadow: 0 0 15px rgba(255, 24, 1, 0.6);
-        border-color: #FF1801;
+    
+    /* Target transparent overlays precisely */
+    .popover-anchor div[data-testid="stPopover"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 85px !important;
+        z-index: 10;
+        opacity: 0 !important;
     }
-    .data-section {
-        margin-left: 15px;
-        text-align: left;
-    }
-    .title-small {
-        color: #888;
-        font-size: 0.7em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .driver-name {
-        font-size: 1.1em;
-        font-weight: bold;
-        color: #FFF;
-        margin: 2px 0;
-    }
-    .team-row {
-        border-left: 4px solid #FF1801;
-        padding-left: 8px;
-        font-size: 0.85em;
-        color: #BBB;
-        margin-top: 4px;
+    .popover-anchor div[data-testid="stPopover"] > button {
+        width: 100% !important;
+        height: 85px !important;
+        border: none !important;
+        background: transparent !important;
+        cursor: pointer !important;
     }
     
     /* Custom Badge Styles for Positions */
@@ -155,12 +145,6 @@ st.markdown(
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-
-    /* Style override for popover telemetry cards */
-    div[data-testid="stPopover"] { width: 100% !important; }
-
-    [data-testid="stPopover"] { position: relative; margin-bottom: -70px; z-index: 10; opacity: 0; }
-    [data-testid="stPopover"] > button { height: 70px; }
     </style>
     """,
     unsafe_allow_html=True
@@ -247,8 +231,6 @@ TRACK_METRICS = {
 
 def get_driver_image(driver_code):
     local_path = f"drivers_images/{driver_code}.png"
-    
-    # If file exists in local workspace, sandbox inject via Base64 stream bypass
     if os.path.exists(local_path):
         try:
             with open(local_path, "rb") as img_file:
@@ -256,8 +238,6 @@ def get_driver_image(driver_code):
             return f"data:image/png;base64,{b64_string}"
         except Exception:
             pass
-            
-    # Universal CDN asset router fallback
     return OFFICIAL_F1_IMAGES.get(driver_code, "https://media.formula1.com/d_driver_fallback_image.png")
 
 @st.cache_resource
@@ -270,10 +250,9 @@ bundle = load_model_bundle()
 if bundle is None: st.stop()
 model, ALL_FEATURES = bundle["model"], bundle["features"]
 
-# --- Title Header Branding ---
-st.markdown("<h1 style='color: #FF1801; font-family: sans-serif; margin-top: -20px; letter-spacing: 1px;'>🏎️ PaddockPulse V3</h1>", unsafe_allow_html=True)
-st.markdown("<p style='font-size: 1.15em; color: #BBBBBB; font-style: italic;'>Predictive Telemetry & Rolling Analytics • Straight From The Pit Lane</p>", unsafe_allow_html=True)
-st.markdown("---")
+# --- Header Branding ---
+st.markdown("<h1 style='color: #FF1801; font-weight: bold; margin-top: -10px; margin-bottom: 2px;'>Formula 1 Race Outcome Predictor V3</h1>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 1.0em; color: #888888; margin-bottom: 25px;'>Powered by CatBoost & Dynamic Rolling Form Analytics</p>", unsafe_allow_html=True)
 
 year = 2026
 F1_2026_SCHEDULE = [
@@ -304,81 +283,87 @@ for i, event in enumerate(F1_2026_SCHEDULE):
 
 races_list = [f"Round {e['round']}: {e['race']}" for e in F1_2026_SCHEDULE]
 
+# ==================== ROW 1 CONSOLE INTERFACES ====================
 row1_cols = st.columns(4)
 
 with row1_cols[0]:
     live_wdc_df = fetch_live_wdc_standings()
-    leader_name = live_wdc_df.iloc[0]["Driver"] if not live_wdc_df.empty else "Kimi Antonelli"
-    leader_team = live_wdc_df.iloc[0]["Team"] if not live_wdc_df.empty else "Mercedes"
-    leader_code = "ANT"
-    border_color = TEAM_COLORS.get(leader_team, "#FF1801")
-
-    # CSS HACK: Popover overlay transparent layers execution
     st.markdown("""
-    <style>
-    div[data-testid="stPopover"] {
-        position: absolute;
-        width: 100%;
-        height: 80px;
-        z-index: 99;
-        opacity: 0;
-        cursor: pointer;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    with st.popover("Standings", use_container_width=True):
-        st.markdown("<h3 style='color:#FF1801;'>🏆 Live WDC Standings</h3>", unsafe_allow_html=True)
-        st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True)
-
-    # Permanent Render View Card Container Layout
-    st.markdown(f"""
-    <div class='driver-card'>
-        <img src='{get_driver_image(leader_code)}' style='width: 55px; height: 55px; border-radius: 50%; object-fit: cover;' />
-        <div class='data-section'>
-            <div class='title-small'>WDC CONTENDER</div>
-            <div class='driver-name'>{leader_name}</div>
-            <div class='team-row' style='border-left: 4px solid {border_color};'>{leader_team}</div>
+    <div class="interactive-wrapper popover-anchor">
+        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important;">
+            <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>WDC Standings</span>
+            <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Click to expand leaderboard</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    with st.popover("Standings View"):
+        st.markdown("<h3 style='color:#FF1801;'>🏆 Live Driver Championship Standings</h3>", unsafe_allow_html=True)
+        st.dataframe(live_wdc_df.set_index("Pos"), use_container_width=True)
 
 with row1_cols[1]:
-    selected_race_box = st.selectbox("Select Grand Prix", races_list, index=default_index)
+    # Custom container styling wrapped over a clean Streamlit Dropdown selector
+    st.markdown('<div class="paddock-box" style="border-left: 4px solid #666; align-items: stretch; padding: 6px 14px;">', unsafe_allow_html=True)
+    selected_race_box = st.selectbox("Select Grand Prix", races_list, index=default_index, label_visibility="collapsed")
+    st.markdown('</div>', unsafe_allow_html=True)
     race_name = F1_2026_SCHEDULE[races_list.index(selected_race_box)]["race"]
 
 with row1_cols[2]:
     st.markdown(f"""
-    <div style='background: #14141C; padding: 6px 14px; border-radius: 8px; border-left: 4px solid #FF1801; text-align: left !important; height: 58px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.02); line-height: 1.3;'>
-        <span style='color: #888888; font-size: 0.7em; text-transform: uppercase;'>Upcoming Live Weekend</span><br>
-        <strong style='color: #FFFFFF; font-size: 0.9em; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>🎯 {next_race_name}</strong>
-        <span style='color: #FF1801; font-size: 0.75em; font-weight: bold;'>📅 {next_race_date_str}</span>
+    <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35;">
+        <span style='color: #888888; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;'>Upcoming Live Weekend</span>
+        <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'>🎯 {next_race_name}</strong>
+        <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'>📅 {next_race_date_str}</span>
     </div>
     """, unsafe_allow_html=True)
 
 with row1_cols[3]:
-    with st.popover("Constructor standing"):
+    st.markdown("""
+    <div class="interactive-wrapper popover-anchor">
+        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important;">
+            <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Constructor standing</span>
+            <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Expand team rankings</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    with st.popover("Constructor Window"):
         st.markdown("<h4 style='color:#FF1801;'>🏁 Constructors Championship Standings</h4>", unsafe_allow_html=True)
         wcc_data = pd.DataFrame({"Pos": [1, 2, 3, 4, 5], "Team": ["Mercedes", "Ferrari", "McLaren", "Red Bull Racing", "Cadillac"], "Points": [262, 190, 141, 89, 0]})
         st.table(wcc_data.set_index("Pos"))
 
-st.markdown("<br>", unsafe_allow_html=True)
-
+# ==================== ROW 2 CONSOLE INTERFACES ====================
 row2_cols = st.columns(3)
+
 with row2_cols[0]:
     track_info = TRACK_METRICS.get(race_name, {"name": "F1 Grand Prix Track", "weather": "Fetching Live Status..."})
-    st.markdown(f"""<div style='text-align: center; background: #14141C; padding: 8px; border-radius: 8px; height: 58px; border: 1px solid rgba(255,255,255,0.02); box-shadow: 0 4px 15px rgba(0,0,0,0.25);'><div style='font-size: 1.05em; font-weight: 600; color: #FFF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>🗺️ {track_info['name']}</div><div style='color: #888888; font-size: 0.85em;'>{track_info['weather']}</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="paddock-box" style="border-left: 4px solid #64C4FF; align-items: center; text-align: center !important;">
+        <span style='font-size: 1.1em; font-weight: 600; color: #FFF;'>Circuit details</span>
+        <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'>🗺️ {track_info['name']} • {track_info['weather']}</span>
+    </div>
+    """, unsafe_allow_html=True)
 
 with row2_cols[1]:
+    # Centered generation triggers inside custom panel environments
+    st.markdown('<div class="paddock-box" style="border-left: 4px solid #27F4D2; align-items: stretch; padding: 12px 14px;">', unsafe_allow_html=True)
     trigger_prediction = st.button("🔮 Generate Grid Prediction", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with row2_cols[2]:
-    with st.popover("Last race result"):
+    st.markdown("""
+    <div class="interactive-wrapper popover-anchor">
+        <div class="paddock-box" style="border-left: 4px solid #B6BABD; align-items: center; text-align: center !important;">
+            <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Last race result</span>
+            <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Click to open race summary</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    with st.popover("Results Window"):
         st.markdown("<h4 style='color:#FF1801;'>🏁 AWS Gran Premio de España Result</h4>", unsafe_allow_html=True)
         st.markdown("**1st:** Lewis Hamilton (Ferrari)<br>**2nd:** George Russell (Mercedes)<br>**3rd:** Lando Norris (McLaren)", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
+# ==================== PREDICTED PODIUM ENGINE VIEW ====================
 if trigger_prediction:
     with st.spinner("Processing prediction..."):
         try:
@@ -391,55 +376,56 @@ if trigger_prediction:
         if pred_df is None or pred_df.empty: 
             st.warning("No data returned.")
         else:
-            st.markdown("<h2 style='margin: 20px 0;'>🏆 Predicted Podium</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='margin: 25px 0 15px 0; font-weight: 600;'>🏆 Predicted Podium</h2>", unsafe_allow_html=True)
             podium_cols = st.columns(3)
             
-            # --- P2: RUNNER UP (LEFT PANEL) ---
+            # --- P2: RUNNER UP (LEFT PANEL CONTAINER) ---
             if len(pred_df) > 1:
                 p2_row = pred_df.iloc[1]
                 p2_color = TEAM_COLORS.get(p2_row['team'], '#FFFFFF')
                 p2_logo_centered = get_base64_logo_html(p2_row['team'], p2_color, centered=True)
                 with podium_cols[0]:
                     st.markdown(f"""
-                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0;">
-                        <div><span class='pos-badge' style='background:#C0C0C0; color:#111; margin-bottom: 15px;'>🥈 P2</span></div>
-                        <img src="{get_driver_image(p2_row['driver'])}" style="width: 160px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
-                        <h3 style="margin: 5px 0 2px 0; font-size: 1.35em; color: #FFF;">{p2_row['_name']}</h3>
-                        <div style="width: 100%; margin-top: 5px;">{p2_logo_centered}</div>
+                    <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p2_color}; padding: 25px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#C0C0C0; color:#111;'>🥈 P2</span></div>
+                        <img src="{get_driver_image(p2_row['driver'])}" style="width: 150px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
+                        <h3 style="margin: 5px 0 2px 0; font-size: 1.4em; color: #FFF; font-weight: 500;">{p2_row['_name']}</h3>
+                        <div style="width: 100%; margin-top: 8px;">{p2_logo_centered}</div>
                     </div>
                     """, unsafe_allow_html=True)
 
-            # --- P1: RACE WINNER (CENTER HIGHLIGHT PANEL) ---
+            # --- P1: THE WINNER (CENTER HIGHLIGHT PANEL CONTAINER) ---
             if len(pred_df) > 0:
                 p1_row = pred_df.iloc[0]
                 p1_color = TEAM_COLORS.get(p1_row['team'], '#FFFFFF')
                 p1_logo_centered = get_base64_logo_html(p1_row['team'], p1_color, centered=True)
                 with podium_cols[1]:
                     st.markdown(f"""
-                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; border: 1px solid rgba(255, 215, 0, 0.2); background: rgba(255, 215, 0, 0.01); border-radius: 10px;">
-                        <div><span class='pos-badge' style='background:#FFD700; color:#111; margin-bottom: 15px; box-shadow: 0 0 10px rgba(255,215,0,0.3);'>🏆 WINNER</span></div>
-                        <img src="{get_driver_image(p1_row['driver'])}" style="width: 190px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
-                        <h2 style="margin: 5px 0 2px 0; font-size: 1.6em; color: #FFF; font-weight: bold;">{p1_row['_name']}</h2>
-                        <div style="width: 100%; margin-top: 5px;">{p1_logo_centered}</div>
+                    <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p1_color}; padding: 30px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.45); border-left: 1px solid rgba(255,215,0,0.05); border-right: 1px solid rgba(255,215,0,0.05);">
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#FFD700; color:#111; box-shadow: 0 0 10px rgba(255,215,0,0.25);'>🏆 WINNER</span></div>
+                        <img src="{get_driver_image(p1_row['driver'])}" style="width: 175px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
+                        <h2 style="margin: 5px 0 2px 0; font-size: 1.7em; color: #FFF; font-weight: bold; letter-spacing: 0.5px;">{p1_row['_name']}</h2>
+                        <div style="width: 100%; margin-top: 8px;">{p1_logo_centered}</div>
                     </div>
                     """, unsafe_allow_html=True)
 
-            # --- P3: THIRD PLACE (RIGHT PANEL) ---
+            # --- P3: THIRD PLACE (RIGHT PANEL CONTAINER) ---
             if len(pred_df) > 2:
                 p3_row = pred_df.iloc[2]
                 p3_color = TEAM_COLORS.get(p3_row['team'], '#FFFFFF')
                 p3_logo_centered = get_base64_logo_html(p3_row['team'], p3_color, centered=True)
                 with podium_cols[2]:
                     st.markdown(f"""
-                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0;">
-                        <div><span class='pos-badge' style='background:#CD7F32; color:#111; margin-bottom: 15px;'>🥉 P3</span></div>
-                        <img src="{get_driver_image(p3_row['driver'])}" style="width: 160px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 10px;" />
-                        <h3 style="margin: 5px 0 2px 0; font-size: 1.35em; color: #FFF;">{p3_row['_name']}</h3>
-                        <div style="width: 100%; margin-top: 5px;">{p3_logo_centered}</div>
+                    <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p3_color}; padding: 25px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#CD7F32; color:#111;'>🥉 P3</span></div>
+                        <img src="{get_driver_image(p3_row['driver'])}" style="width: 150px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
+                        <h3 style="margin: 5px 0 2px 0; font-size: 1.4em; color: #FFF; font-weight: 500;">{p3_row['_name']}</h3>
+                        <div style="width: 100%; margin-top: 8px;">{p3_logo_centered}</div>
                     </div>
                     """, unsafe_allow_html=True)
 
-            st.markdown("<br><h3 style='margin-top: 25px;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
+            # ==================== FULL STANDING TRACK LOG ENGINE ====================
+            st.markdown("<br><h3 style='margin-top: 35px; font-weight:600;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
             
             for idx, row in pred_df.iterrows():
