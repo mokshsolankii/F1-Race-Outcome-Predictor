@@ -98,17 +98,17 @@ TEAM_COLORS = {
 }
 
 TEAM_LOGOS = {
-    "Mercedes": "https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-logo-blackmercedes-benzlogo-blackmercedes-benz-logomercedes-1701527503798vclt8.png",
-    "Ferrari": "https://www.pngplay.com/wp-content/uploads/13/Ferrari-Logo-PNG-HD-Quality.png",
-    "McLaren": "https://www.pngall.com/wp-content/uploads/15/Mclaren-Logo-PNG-Pic.png",
-    "Red Bull Racing": "https://www.pngall.com/wp-content/uploads/15/Red-Bull-Racing-Logo-PNG-Free-Image.png",
-    "BWT Alpine F1 Team": "https://www.pngall.com/wp-content/uploads/13/Alpine-Logo-PNG-Pic.png",
-    "Visa Cash App Racing Bulls F1 Team": "https://www.pngall.com/wp-content/uploads/15/Red-Bull-Racing-Logo-PNG-Image.png", # Fallback racing bull
-    "TGR Haas F1 Team": "https://www.pngall.com/wp-content/uploads/13/Haas-Logo-PNG-Pic.png",
-    "Atlassian Williams F1 Team": "https://www.pngall.com/wp-content/uploads/13/Williams-Logo-PNG-Images.png",
-    "Aston Martin Aramco F1 Team": "https://www.pngall.com/wp-content/uploads/13/Aston-Martin-Logo-PNG-Clipart.png",
-    "Audi Revolut F1 Team": "https://www.pngall.com/wp-content/uploads/13/Sauber-Logo.png",
-    "Cadillac F1 Team": "https://www.pngall.com/wp-content/uploads/13/Cadillac-Logo.png",
+    "Mercedes": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/450px-Mercedes-Logo.svg.png",
+    "Ferrari": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Formula-One-team-logo.svg/330px-Ferrari-Formula-One-team-logo.svg.png",
+    "McLaren": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/McLaren_Racing_logo.svg/450px-McLaren_Racing_logo.svg.png",
+    "Red Bull Racing": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Red_Bull_Racing_logo.svg/450px-Red_Bull_Racing_logo.svg.png",
+    "BWT Alpine F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Alpine_F1_Team_Logo.svg/450px-Alpine_F1_Team_Logo.svg.png",
+    "Visa Cash App Racing Bulls F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Scuderia_AlphaTauri_Logo.svg/450px-Scuderia_AlphaTauri_Logo.svg.png", # Stable dynamic layout bull
+    "TGR Haas F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Haas_F1_Team_logo.svg/345px-Haas_F1_Team_logo.svg.png",
+    "Atlassian Williams F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Williams_Racing_logo.svg/450px-Williams_Racing_logo.svg.png",
+    "Aston Martin Aramco F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Aston_Martin_Lagonda_brand_logo.svg/450px-Aston_Martin_Lagonda_brand_logo.svg.png",
+    "Audi Revolut F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sauber_Motorsport_logo_2022.svg/450px-Sauber_Motorsport_logo_2022.svg.png",
+    "Cadillac F1 Team": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Cadillac_logo.svg/450px-Cadillac_logo.svg.png",
     "Unknown": "https://media.formula1.com/d_default_fallback_image.png"
 }
 
