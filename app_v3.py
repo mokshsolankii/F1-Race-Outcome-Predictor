@@ -457,6 +457,26 @@ with row1_cols[0]:
         transform: translateY(-4px) scale(1.03);
         filter: drop-shadow(0 12px 16px rgba(255, 24, 1, 0.25));
     }
+    .wcc-contender-card {
+    background: #181820;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 12px 16px 12px 20px; /* Logo nahi hai toh left se proper padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 115px !important; 
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-bottom: 12px !important; /* Jaise Col 1 ko dhakka diya tha line pe lane ke liye */
+}
+
+.wcc-wrapper-box:hover .wcc-contender-card {
+    border-color: #FF1801 !important;
+    box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
+    background: #1c1c26 !important;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -490,11 +510,16 @@ with row1_cols[2]:
     """, unsafe_allow_html=True)
 
 with row1_cols[3]:
-    st.markdown("""
-    <div class="interactive-wrapper popover-anchor">
-        <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important;">
-            <span style='color: #FFFFFF; font-size: 1.15em; font-weight: 500;'>Constructor standing</span>
-            <span style='color: #666666; font-size: 0.8em; margin-top: 2px;'>Expand team rankings</span>
+    # WCC Leader defaults (Jaise live Mercedes chal rahi hai tab se)
+    wcc_leader_team = "Mercedes" 
+    wcc_accent_color = TEAM_COLORS.get(wcc_leader_team, "#27F4D2")
+
+    st.markdown(f"""
+    <div class="wcc-wrapper-box">
+        <div class="wcc-contender-card" style="border-left: 5px solid {wcc_accent_color}; text-align: left !important;">
+            <div style="color: #888888; font-size: 0.72em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; text-align: left !important;">WCC CONTENDER</div>
+            <div style="color: #FFFFFF; font-size: 1.25em; font-weight: bold; margin-bottom: 4px; text-align: left !important;">{wcc_leader_team}</div>
+            <div style="font-size: 0.85em; color: #BBBBBB; font-weight: 500; text-align: left !important;">Current Championship Leader</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
