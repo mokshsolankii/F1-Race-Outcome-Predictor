@@ -17,7 +17,7 @@ def fetch_live_wdc_standings():
         if response.status_code == 200:
             data = response.json()
             standings_lists = data["MRData"]["StandingsTable"]["StandingsList"][0]["DriverStandings"]
-            
+
             pos_list, driver_list, team_list, points_list = [], [], [], []
             for item in standings_lists:
                 pos_list.append(int(item["position"]))
@@ -25,7 +25,7 @@ def fetch_live_wdc_standings():
                 driver_list.append(d_name)
                 team_list.append(item["Constructors"][0]["name"])
                 points_list.append(float(item["points"]))
-                
+
             return pd.DataFrame({
                 "Pos": pos_list, "Driver": driver_list, "Team": team_list, "Points": points_list
             })
@@ -42,7 +42,7 @@ def fetch_live_wdc_standings():
         driver_list = f1_table['Driver'].apply(lambda x: " ".join(str(x).split()[:-1])).tolist()
         team_list = f1_table['Car'].tolist()
         points_list = f1_table['PTS'].astype(float).tolist()
-        
+
         return pd.DataFrame({
             "Pos": pos_list, "Driver": driver_list, "Team": team_list, "Points": points_list
         })
@@ -96,7 +96,7 @@ TEAM_LOGOS_MAPPING = {
     "Mercedes": "team_logos/mercedes.png", "Mercedes-AMG Petronas F1 Team": "team_logos/mercedes.png",
     "Ferrari": "team_logos/ferrari.png", "Scuderia Ferrari HP": "team_logos/ferrari.png",
     "McLaren": "team_logos/mclaren.png", "McLaren F1 Team": "team_logos/mclaren.png",
-    "Red Bull Racing": "team_logos/redblue.png" if os.path.exists("team_logos/redblue.png") else "team_logos/redbull.png", 
+    "Red Bull Racing": "team_logos/redblue.png" if os.path.exists("team_logos/redblue.png") else "team_logos/redbull.png",
     "Oracle Red Bull Racing": "team_logos/redbull.png",
     "Alpine": "team_logos/alpine.png", "BWT Alpine F1 Team": "team_logos/alpine.png",
     "Racing Bulls": "team_logos/rb.png", "Visa Cash App RB F1 Team": "team_logos/rb.png", "Visa Cash App Racing Bulls F1 Team": "team_logos/rb.png",
@@ -143,30 +143,30 @@ def get_base64_logo_html(team_name, border_color, centered=False):
     return f"<div style='{align_style}'>{team_name}</div>"
 
 TRACK_METRICS = {
-    "Australia": {"name": "Albert Park Circuit", "weather": "☀️ Sunny | Track Temp: 34°C"},
-    "China": {"name": "Shanghai Circuit", "weather": "☁️ Overcast | Track Temp: 22°C"},
-    "Japan": {"name": "Suzuka Racing Course", "weather": "☀️ Clear | Track Temp: 29°C"},
-    "Bahrain": {"name": "Bahrain Circuit", "weather": "🌙 Night Race | Track Temp: 27°C"},
-    "Saudi Arabia": {"name": "Jeddah Corniche", "weather": "🌙 Night Race | Track Temp: 28°C"},
-    "Miami": {"name": "Miami Autodrome", "weather": "🌤️ Humid | Track Temp: 41°C"},
-    "Canada": {"name": "Circuit Gilles-Villeneuve", "weather": "🌤️ Breezy | Track Temp: 26°C"},
-    "Monaco": {"name": "Circuit de Monaco", "weather": "☀️ Clear | Track Temp: 32°C"},
-    "Spain (Barcelona)": {"name": "Circuit de Catalunya", "weather": "☀️ Hot | Track Temp: 39°C"},
-    "Austria": {"name": "Red Bull Ring (Spielberg)", "weather": "🌤️ Part Cloud | Track Temp: 28°C"},
-    "Great Britain": {"name": "Silverstone Circuit", "weather": "🌧️ Light Drizzle | Track Temp: 19°C"},
-    "Belgium": {"name": "Spa-Francorchamps", "weather": "☁️ Cloudy | Track Temp: 18°C"},
-    "Netherlands": {"name": "Circuit Zandvoort", "weather": "💨 Windy | Track Temp: 21°C"},
-    "Italy": {"name": "Autodromo Nazionale Monza", "weather": "☀️ Very Hot | Track Temp: 42°C"},
-    "Azerbaijan": {"name": "Baku City Circuit", "weather": "🌤️ Clear | Track Temp: 30°C"},
-    "Singapore": {"name": "Marina Bay Street Circuit", "weather": "🌧️ Humid & Wet | Track Temp: 29°C"},
-    "United States": {"name": "Circuit of the Americas", "weather": "☀️ Sunny | Track Temp: 37°C"},
-    "Mexico": {"name": "Autódromo Hermanos Rodríguez", "weather": "🌤️ Thin Air | Track Temp: 33°C"},
-    "Brazil": {"name": "Autódromo José Carlos Pace (Interlagos)", "weather": "🌧️ Unpredictable | Track Temp: 25°C"},
-    "Las Vegas": {"name": "Las Vegas Strip Circuit", "weather": "🌙 Cold Night | Track Temp: 14°C"},
-    "Qatar": {"name": "Lusail International Circuit", "weather": "🌙 Windy Night | Track Temp: 31°C"},
-    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "🌙 Twlight Race | Track Temp: 28°C"},
-    "Hungary": {"name": "Hungaroring (Budapest)", "weather": "☀️ Scorching | Track Temp: 43°C"},
-    "Spain (Madrid)": {"name": "Madrid Street Circuit", "weather": "🌤️ Pleasant | Track Temp: 28°C"},
+    "Australia": {"name": "Albert Park Circuit", "weather": "&#x2600; Sunny | Track Temp: 34&#xB0;C"},
+    "China": {"name": "Shanghai Circuit", "weather": "&#x2601; Overcast | Track Temp: 22&#xB0;C"},
+    "Japan": {"name": "Suzuka Racing Course", "weather": "&#x2600; Clear | Track Temp: 29&#xB0;C"},
+    "Bahrain": {"name": "Bahrain Circuit", "weather": "&#x1F319; Night Race | Track Temp: 27&#xB0;C"},
+    "Saudi Arabia": {"name": "Jeddah Corniche", "weather": "&#x1F319; Night Race | Track Temp: 28&#xB0;C"},
+    "Miami": {"name": "Miami Autodrome", "weather": "&#x1F324; Humid | Track Temp: 41&#xB0;C"},
+    "Canada": {"name": "Circuit Gilles-Villeneuve", "weather": "&#x1F324; Breezy | Track Temp: 26&#xB0;C"},
+    "Monaco": {"name": "Circuit de Monaco", "weather": "&#x2600; Clear | Track Temp: 32&#xB0;C"},
+    "Spain (Barcelona)": {"name": "Circuit de Catalunya", "weather": "&#x2600; Hot | Track Temp: 39&#xB0;C"},
+    "Austria": {"name": "Red Bull Ring (Spielberg)", "weather": "&#x1F324; Part Cloud | Track Temp: 28&#xB0;C"},
+    "Great Britain": {"name": "Silverstone Circuit", "weather": "&#x1F327; Light Drizzle | Track Temp: 19&#xB0;C"},
+    "Belgium": {"name": "Spa-Francorchamps", "weather": "&#x2601; Cloudy | Track Temp: 18&#xB0;C"},
+    "Netherlands": {"name": "Circuit Zandvoort", "weather": "&#x1F4A8; Windy | Track Temp: 21&#xB0;C"},
+    "Italy": {"name": "Autodromo Nazionale Monza", "weather": "&#x2600; Very Hot | Track Temp: 42&#xB0;C"},
+    "Azerbaijan": {"name": "Baku City Circuit", "weather": "&#x1F324; Clear | Track Temp: 30&#xB0;C"},
+    "Singapore": {"name": "Marina Bay Street Circuit", "weather": "&#x1F327; Humid & Wet | Track Temp: 29&#xB0;C"},
+    "United States": {"name": "Circuit of the Americas", "weather": "&#x2600; Sunny | Track Temp: 37&#xB0;C"},
+    "Mexico": {"name": "Autódromo Hermanos Rodríguez", "weather": "&#x1F324; Thin Air | Track Temp: 33&#xB0;C"},
+    "Brazil": {"name": "Autódromo José Carlos Pace (Interlagos)", "weather": "&#x1F327; Unpredictable | Track Temp: 25&#xB0;C"},
+    "Las Vegas": {"name": "Las Vegas Strip Circuit", "weather": "&#x1F319; Cold Night | Track Temp: 14&#xB0;C"},
+    "Qatar": {"name": "Lusail International Circuit", "weather": "&#x1F319; Windy Night | Track Temp: 31&#xB0;C"},
+    "Abu Dhabi": {"name": "Yas Marina Circuit", "weather": "&#x1F319; Twilight Race | Track Temp: 28&#xB0;C"},
+    "Hungary": {"name": "Hungaroring (Budapest)", "weather": "&#x2600; Scorching | Track Temp: 43&#xB0;C"},
+    "Spain (Madrid)": {"name": "Madrid Street Circuit", "weather": "&#x1F324; Pleasant | Track Temp: 28&#xB0;C"},
 }
 
 # ==================== 2. APP PAGE CONFIGURATION ====================
@@ -179,7 +179,7 @@ st.markdown(
     <style>
     [data-testid="stSidebar"] { display: none !important; }
     [data-testid="stSidebarCollapseButton"] { display: none !important; }
-    
+
     .stApp {
         background-color: #0F0F14 !important;
         color: #F3F4F6 !important;
@@ -188,16 +188,16 @@ st.markdown(
         text-align: center !important;
         font-family: 'Titillium Web', 'Segoe UI', sans-serif !important;
     }
-    
+
     [data-testid="stHorizontalBlock"] {
         gap: 16px !important;
     }
-    
+
     /* Premium Minimalist Paddock Box Grid System - Updated to match 115px peak height */
     .paddock-box {
         background: #181820 !important;
-        border-radius: 10px !important; 
-        padding: 16px 20px !important;    
+        border-radius: 10px !important;
+        padding: 16px 20px !important;
         border: 1px solid rgba(255, 255, 255, 0.04) !important;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -205,12 +205,12 @@ st.markdown(
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 115px !important;  /* Changed from 95px to 115px */
-        max-height: 115px !important;  /* Changed from 95px to 115px */
+        min-height: 115px !important;
+        max-height: 115px !important;
         box-sizing: border-box;
     }
     .paddock-box:hover {
-        transform: translateY(-2px) !important; 
+        transform: translateY(-2px) !important;
         border-color: rgba(255, 24, 1, 0.25) !important;
         background: #1c1c26 !important;
         box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
@@ -230,8 +230,8 @@ st.markdown(
         color: #111116 !important;
         box-shadow: 0 0 15px rgba(39, 244, 210, 0.4) !important;
     }
-    
-    /* ==================== 🛠️ UNIFIED SELECTBOX CARD (REALIGNED) 🛠️ ==================== */
+
+    /* ==================== UNIFIED SELECTBOX CARD (REALIGNED) ==================== */
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"] {
         background: #181820 !important;
         border: 1px solid rgba(255, 255, 255, 0.04) !important;
@@ -240,10 +240,10 @@ st.markdown(
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-end !important;
-        min-height: 115px !important; /* Raised to match Column 1 */
-        max-height: 115px !important; /* Raised to match Column 1 */
+        min-height: 115px !important;
+        max-height: 115px !important;
         padding: 12px 16px 12px 16px !important;
-        margin-top: 0px !important;    /* REMOVED the 20px gap pushing it down */
+        margin-top: 0px !important;
         box-sizing: border-box !important;
         position: relative !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -252,7 +252,7 @@ st.markdown(
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]::before {
         content: "SELECT GRAND PRIX" !important;
         position: absolute !important;
-        top: 22px !important;          /* Repositioned slightly lower for clean spacing */
+        top: 22px !important;
         left: 0 !important;
         width: 100% !important;
         text-align: center !important;
@@ -276,7 +276,7 @@ st.markdown(
         border-radius: 6px !important;
         color: #F3F4F6 !important;
         height: 40px !important;
-        margin-top: auto !important; 
+        margin-top: auto !important;
     }
 
     div[data-testid="stColumn"]:nth-of-type(2) div[data-testid="stSelectbox"]:hover {
@@ -285,12 +285,12 @@ st.markdown(
         background: #1c1c26 !important;
         box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
     }
-    
+
     .interactive-wrapper {
         position: relative;
         width: 100%;
     }
-    
+
     .popover-anchor div[data-testid="stPopover"] {
         position: absolute;
         top: 0;
@@ -307,7 +307,7 @@ st.markdown(
         background: transparent !important;
         cursor: pointer !important;
     }
-    
+
     .pos-badge {
         background: #FF1801;
         color: white;
@@ -318,7 +318,7 @@ st.markdown(
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-      .grid-row-container {
+    .grid-row-container {
         background: #14141c;
         border-radius: 6px;
         padding: 10px 15px;
@@ -326,6 +326,83 @@ st.markdown(
         border-left: 4px solid #333;
         display: flex;
         align-items: center;
+    }
+
+    /* ==================== COLUMN 1 WDC CARD ==================== */
+    .wdc-wrapper-box {
+        position: relative;
+        width: 100%;
+        height: 115px;
+        display: flex;
+        align-items: flex-end;
+        transform: translateY(-15px) !important;
+    }
+    .wdc-contender-card {
+        background: #181820;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        padding: 12px 16px 12px 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 115px !important;
+        box-sizing: border-box;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .wdc-3d-avatar {
+        position: absolute;
+        left: 8px;
+        bottom: 0px;
+        width: 80px;
+        height: 110px;
+        object-fit: contain;
+        z-index: 10;
+        filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    .wdc-wrapper-box:hover .wdc-contender-card {
+        border-color: #FF1801 !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
+        background: #1c1c26 !important;
+    }
+    .wdc-wrapper-box:hover .wdc-3d-avatar {
+        transform: translateY(-4px) scale(1.03);
+        filter: drop-shadow(0 12px 16px rgba(255, 24, 1, 0.25));
+    }
+
+    /* ==================== COLUMN 4 WCC CARD ==================== */
+    .wcc-wrapper-box {
+        position: relative !important;
+        width: 100%;
+        height: 115px;
+        display: flex;
+        align-items: flex-end;
+    }
+    .wcc-contender-card {
+        background: #181820 !important;
+        border: 1px solid rgba(255, 255, 255, 0.04) !important;
+        border-radius: 10px !important;
+        padding: 12px 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 100%;
+        height: 115px !important;
+        box-sizing: border-box;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        margin-bottom: 12px !important;
+    }
+    .wcc-wrapper-box:hover .wcc-contender-card {
+        transform: translateY(-4px) !important;
+        border-color: rgba(255, 24, 1, 0.4) !important;
+        background: #1c1c26 !important;
+        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
+    }
+    .wcc-wrapper-box:hover img {
+        transform: scale(1.08);
     }
     </style>
     """,
@@ -343,7 +420,7 @@ if bundle is None: st.stop()
 model, ALL_FEATURES = bundle["model"], bundle["features"]
 
 st.markdown("<h1 style='color: #FF1801; font-weight: bold; margin-top: -10px; margin-bottom: 2px;'>PaddockGrid</h1>", unsafe_allow_html=True)
-st.markdown("<p style='font-size: 1.0em; color: #888888; margin-bottom: 25px;'>⚡ Telemetry Analytics • Straight from the pitlane, onto the grid ⚡</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 1.0em; color: #888888; margin-bottom: 25px;'>&#x26A1; Telemetry Analytics &bull; Straight from the pitlane, onto the grid &#x26A1;</p>", unsafe_allow_html=True)
 
 F1_2026_SCHEDULE = [
     {"round": 1, "race": "Australia", "date_str": "06-08 MAR", "date": datetime(2026, 3, 8)},
@@ -396,106 +473,19 @@ with row1_cols[0]:
     else:
         leader_name = "Kimi Antonelli"
         leader_team = "Mercedes"
-        
+
     accent_color = TEAM_COLORS.get(leader_team, "#27F4D2")
-    
+
     try:
         raw_lastname = leader_name.split()[-1]
         if "sainz" in leader_name.lower():
             driver_code = "SAI"
         else:
             driver_code = raw_lastname[:3].upper()
-    except:
+    except Exception:
         driver_code = "ANT"
 
     driver_b64_stream = get_driver_image(driver_code)
-
-    st.markdown("""
-    <style>
-    /* ==================== COLUMN 1 PERFECT COHERENCE ==================== */
-    .wdc-wrapper-box {
-        position: relative;
-        width: 100%;
-        height: 115px; /* Box ki absolute background height sync ki */
-        display: flex;
-        align-items: flex-end;
-        transform: translateY(-15px) !important;
-    }
-    /* Purane .wdc-contender-card ko isse replace karo */
-.wdc-contender-card {
-    background: #181820;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
-    padding: 12px 16px 12px 90px; /* Padding adjust ki taaki text thoda left aaye */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Text ko vertically center karega */
-    width: 100%;
-    height: 115px !important; 
-    box-sizing: border-box;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Purane .wdc-3d-avatar ko isse replace karo taaki driver image perfect scale ho */
-.wdc-3d-avatar {
-    position: absolute;
-    left: 8px;
-    bottom: 0px; /* Bilkul bottom par align rahega */
-    width: 80px;
-    height: 110px; 
-    object-fit: contain;
-    z-index: 10;
-    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-    .wdc-wrapper-box:hover .wdc-contender-card {
-        border-color: #FF1801 !important;
-        box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
-        background: #1c1c26 !important;
-    }
-    .wdc-wrapper-box:hover .wdc-3d-avatar {
-        transform: translateY(-4px) scale(1.03);
-        filter: drop-shadow(0 12px 16px rgba(255, 24, 1, 0.25));
-    }
-    /* WCC Wrapper setup jo hover events handle karega */
-.wcc-wrapper-box {
-    position: relative !important;
-    width: 100%;
-    height: 115px; 
-    display: flex;
-    align-items: flex-end;
-}
-
-/* WCC Card styling jisme text center aligned rahega */
-.wcc-contender-card {
-    background: #181820 !important;
-    border: 1px solid rgba(255, 255, 255, 0.04) !important;
-    border-radius: 10px !important;
-    padding: 12px 16px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important; /* Poora content horizontally center */
-    text-align: center !important;
-    width: 100%;
-    height: 115px !important; 
-    box-sizing: border-box;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    margin-bottom: 12px !important; /* Grid alignment fix */
-}
-
-/* Column 1 jaisa exact hover animation aur red glow dynamic effect */
-.wcc-wrapper-box:hover .wcc-contender-card {
-    transform: translateY(-4px) !important; /* Card halka sa upar uthega */
-    border-color: rgba(255, 24, 1, 0.4) !important; /* Red border focus */
-    background: #1c1c26 !important;
-    box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important; /* Red F1 neon glow */
-}
-
-/* Logo scale up animation on hover */
-.wcc-wrapper-box:hover img {
-    transform: scale(1.08);
-}
 
     st.markdown(f"""
     <div class="wdc-wrapper-box">
@@ -527,19 +517,18 @@ with row1_cols[2]:
     """, unsafe_allow_html=True)
 
 with row1_cols[3]:
-    wcc_leader_team = "Mercedes" 
+    wcc_leader_team = "Mercedes"
     wcc_accent_color = TEAM_COLORS.get(wcc_leader_team, "#27F4D2")
-    
+
     logo_path = "team_logos/mercedes.png"
     logo_html = ""
-    
-    # Logo ka size badha kar height 32px kar di taaki clear aur bada dikhe
+
     if os.path.exists(logo_path):
         with open(logo_path, "rb") as img_file:
             b64_string = base64.b64encode(img_file.read()).decode()
         logo_html = f'<img src="data:image/png;base64,{b64_string}" style="height: 32px; width: auto; margin-right: 10px; transition: transform 0.3s ease; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));" />'
     else:
-        logo_html = f'<img src="https://media.formula1.com/content/dam/fom-website/teams/2026/mercedes.png" style="height: 32px; width: auto; margin-right: 10px; transition: transform 0.3s ease;" />'
+        logo_html = '<img src="https://media.formula1.com/content/dam/fom-website/teams/2026/mercedes.png" style="height: 32px; width: auto; margin-right: 10px; transition: transform 0.3s ease;" />'
 
     st.markdown(f"""
     <div class="wcc-wrapper-box">
@@ -553,11 +542,6 @@ with row1_cols[3]:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # CRITICAL: Iske niche agar koi 'with st.popover(...):' ya baki lines bachi hain, unhe delete kar do.
-
-        wcc_data = pd.DataFrame({"Pos": [1, 2, 3, 4, 5], "Team": ["Mercedes", "Ferrari", "McLaren", "Red Bull Racing", "Cadillac"], "Points": [262, 190, 141, 89, 0]})
-        st.table(wcc_data.set_index("Pos"))
 
 # ==================== ROW 2 CONSOLE INTERFACES ====================
 row2_cols = st.columns(3)
@@ -567,14 +551,13 @@ with row2_cols[0]:
     st.markdown(f"""
     <div class="paddock-box" style="border-left: 4px solid #64C4FF; align-items: center; text-align: center !important; min-height: 85px; max-height: 85px;">
         <span style='font-size: 1.1em; font-weight: 600; color: #FFF;'>Circuit details</span>
-        <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'>&#x1F5FA; {track_info['name']} • {track_info['weather']}</span>
+        <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'>&#x1F5FA; {track_info['name']} &bull; {track_info['weather']}</span>
     </div>
     """, unsafe_allow_html=True)
 
 with row2_cols[1]:
-    # Fixed broken DOM structures: Nested standard Streamlit button inside custom CSS class wrapper
     st.markdown('<div class="prediction-container paddock-box" style="border-left: 4px solid #27F4D2; align-items: stretch; padding: 12px 14px; min-height: 85px; max-height: 85px;">', unsafe_allow_html=True)
-    trigger_prediction = st.button("🔮 Generate Grid Prediction", use_container_width=True)
+    trigger_prediction = st.button("\U0001F52E Generate Grid Prediction", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with row2_cols[2]:
@@ -587,7 +570,7 @@ with row2_cols[2]:
     </div>
     """, unsafe_allow_html=True)
     with st.popover("Results Window"):
-        st.markdown("<h4 style='color:#FF1801;'>🏁 AWS Gran Premio de España Result</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#FF1801;'>&#x1F3C1; AWS Gran Premio de España Result</h4>", unsafe_allow_html=True)
         st.markdown("**1st:** Lewis Hamilton (Ferrari)<br>**2nd:** George Russell (Mercedes)<br>**3rd:** Lando Norris (McLaren)", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -605,13 +588,13 @@ if trigger_prediction:
         except Exception as e:
             st.error(f"Failed to execute prediction pipeline: {e}")
             st.stop()
-            
-        if pred_df is None or pred_df.empty: 
+
+        if pred_df is None or pred_df.empty:
             st.warning("No data returned.")
         else:
-            st.markdown("<h2 style='margin: 25px 0 15px 0; font-weight: 600;'>🏆 Predicted Podium</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='margin: 25px 0 15px 0; font-weight: 600;'>&#x1F3C6; Predicted Podium</h2>", unsafe_allow_html=True)
             podium_cols = st.columns(3)
-            
+
             if len(pred_df) > 1:
                 p2_row = pred_df.iloc[1]
                 p2_color = TEAM_COLORS.get(p2_row['team'], '#FFFFFF')
@@ -645,14 +628,22 @@ if trigger_prediction:
                 p3_color = TEAM_COLORS.get(p3_row['team'], '#FFFFFF')
                 p3_logo_centered = get_base64_logo_html(p3_row['team'], p3_color, centered=True)
                 with podium_cols[2]:
-                    st.markdown('''
-<div style=
-    "background-color: rgba(39, 244, 210, 0.1); 
-    border: 1px solid rgba(39, 244, 210, 0.3); 
-    padding: 12px 16px; 
-    border-radius: 8px; 
-    display: flex; 
-    align-items: center; 
+                    st.markdown(f"""
+                    <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p3_color}; padding: 25px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#CD7F32; color:#111;'>P3</span></div>
+                        <img src="{get_driver_image(p3_row['driver'])}" style="width: 140px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
+                        <h3 style="margin: 5px 0 2px 0; font-size: 1.3em; color: #FFF; font-weight: 500;">{p3_row['_name']}</h3>
+                        <div style="width: 100%; margin-top: 8px;">{p3_logo_centered}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            st.markdown('''
+<div style="background-color: rgba(39, 244, 210, 0.1);
+    border: 1px solid rgba(39, 244, 210, 0.3);
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
     justify-content: center;
     gap: 8px;
     margin-top: 20px;
@@ -666,9 +657,9 @@ if trigger_prediction:
 </div>
 ''', unsafe_allow_html=True)
 
-            st.markdown("<br><h3 style='margin-top: 35px; font-weight:600;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
+            st.markdown("<br><h3 style='margin-top: 35px; font-weight:600;'>&#x1F3C1; Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
-            
+
             for idx, row in pred_df.iterrows():
                 row_cols = st.columns([1, 2, 4, 2])
                 row_cols[0].markdown(f"**P{row['predicted_position']}**")
@@ -677,5 +668,5 @@ if trigger_prediction:
                 logo_html_block = get_base64_logo_html(row['team'], border_color, centered=False)
                 row_cols[2].markdown(logo_html_block, unsafe_allow_html=True)
                 row_cols[3].markdown(f"Grid: {int(row['grid_position'])}")
-                
-            st.success(f"📊 Prediction output processed cleanly.")
+
+            st.success("\U0001F4CA Prediction output processed cleanly.")
