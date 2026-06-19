@@ -341,12 +341,12 @@ st.markdown(
     .wcc-wrapper-box { position: relative !important; width: 100%; height: 115px; display: flex; align-items: flex-end; overflow: visible; }
     .wcc-contender-card {
         background: #181820 !important; border: 1px solid rgba(255, 255, 255, 0.04) !important;
-        border-radius: 10px !important; padding: 12px 100px 12px 16px !important;
+        border-radius: 10px !important; padding: 12px 16px 12px 90px !important;
         display: flex !important; flex-direction: column !important;
         justify-content: center !important; align-items: flex-start !important;
         text-align: left !important; width: 100%; height: 115px !important;
         box-sizing: border-box; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        margin-bottom: 12px !important; position: relative !important;
+        position: relative !important;
     }
     .wcc-wrapper-box:hover .wcc-contender-card {
         border-color: rgba(255, 24, 1, 0.4) !important;
@@ -478,13 +478,13 @@ with row1_cols[3]:
 
     st.markdown(f"""
     <style>
-    /* WCC 3D logo — floats bottom-right, mirrors WDC avatar treatment */
+    /* WCC 3D logo — floats bottom-LEFT, mirrors WDC avatar exactly */
     .wcc-3d-logo {{
         position: absolute;
-        right: 10px;
+        left: 8px;
         bottom: 0px;
-        width: 90px;
-        height: 105px;
+        width: 80px;
+        height: 100px;
         object-fit: contain;
         z-index: 10;
         filter: drop-shadow(0 8px 16px rgba(0,0,0,0.55)) brightness(1.05);
@@ -492,14 +492,8 @@ with row1_cols[3]:
         pointer-events: none;
     }}
     .wcc-wrapper-box:hover .wcc-3d-logo {{
-        transform: translateY(-5px) scale(1.06);
-        filter: drop-shadow(0 12px 20px {wcc_accent_color}55) brightness(1.15);
-    }}
-    /* Override card to left-align text like WDC, leave right side open for logo */
-    .wcc-contender-card {{
-        padding: 12px 100px 12px 16px !important;
-        align-items: flex-start !important;
-        text-align: left !important;
+        transform: translateY(-4px) scale(1.04);
+        filter: drop-shadow(0 12px 20px {wcc_accent_color}66) brightness(1.15);
     }}
     </style>
     <div class="wcc-wrapper-box" style="transform: translateY(-15px);">
