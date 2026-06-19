@@ -521,8 +521,8 @@ with row1_cols[2]:
     st.markdown(f"""
     <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35;">
         <span style='color: #888888; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;'>Upcoming Live Weekend</span>
-        <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'> {next_race_name}</strong>
-        <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'> {next_race_date_str}</span>
+        <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'>🎯 {next_race_name}</strong>
+        <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'>📅 {next_race_date_str}</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -567,7 +567,7 @@ with row2_cols[0]:
     st.markdown(f"""
     <div class="paddock-box" style="border-left: 4px solid #64C4FF; align-items: center; text-align: center !important; min-height: 85px; max-height: 85px;">
         <span style='font-size: 1.1em; font-weight: 600; color: #FFF;'>Circuit details</span>
-        <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'> {track_info['name']} {track_info['weather']}</span>
+        <span style='color: #888888; font-size: 0.85em; margin-top: 3px;'>🗺️ {track_info['name']} • {track_info['weather']}</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -619,7 +619,7 @@ if trigger_prediction:
                 with podium_cols[0]:
                     st.markdown(f"""
                     <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p2_color}; padding: 25px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#C0C0C0; color:#111;'>🥈 P2</span></div>
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#C0C0C0; color:#111;'>P2</span></div>
                         <img src="{get_driver_image(p2_row['driver'])}" style="width: 150px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
                         <h3 style="margin: 5px 0 2px 0; font-size: 1.4em; color: #FFF; font-weight: 500;">{p2_row['_name']}</h3>
                         <div style="width: 100%; margin-top: 8px;">{p2_logo_centered}</div>
@@ -633,7 +633,7 @@ if trigger_prediction:
                 with podium_cols[1]:
                     st.markdown(f"""
                     <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p1_color}; padding: 30px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.45); border-left: 1px solid rgba(255,215,0,0.05); border-right: 1px solid rgba(255,215,0,0.05);">
-                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#FFD700; color:#111; box-shadow: 0 0 10px rgba(255,215,0,0.25);'>🏆 WINNER</span></div>
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#FFD700; color:#111; box-shadow: 0 0 10px rgba(255,215,0,0.25);'>WINNER</span></div>
                         <img src="{get_driver_image(p1_row['driver'])}" style="width: 175px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
                         <h2 style="margin: 5px 0 2px 0; font-size: 1.7em; color: #FFF; font-weight: bold; letter-spacing: 0.5px;">{p1_row['_name']}</h2>
                         <div style="width: 100%; margin-top: 8px;">{p1_logo_centered}</div>
@@ -647,7 +647,7 @@ if trigger_prediction:
                 with podium_cols[2]:
                     st.markdown(f"""
                     <div style="background: #181820; border-radius: 12px; border-top: 4px solid {p3_color}; padding: 25px 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#CD7F32; color:#111;'>🥉 P3</span></div>
+                        <div style="margin-bottom: 15px;"><span class='pos-badge' style='background:#CD7F32; color:#111;'>P3</span></div>
                         <img src="{get_driver_image(p3_row['driver'])}" style="width: 150px; height: auto; aspect-ratio: 1/1; object-fit: contain; margin-bottom: 12px;" />
                         <h3 style="margin: 5px 0 2px 0; font-size: 1.4em; color: #FFF; font-weight: 500;">{p3_row['_name']}</h3>
                         <div style="width: 100%; margin-top: 8px;">{p3_logo_centered}</div>
