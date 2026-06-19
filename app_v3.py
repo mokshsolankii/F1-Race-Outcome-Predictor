@@ -420,30 +420,33 @@ with row1_cols[0]:
         display: flex;
         align-items: flex-end;
     }
-    .wdc-contender-card {
-        background: #181820;
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        border-radius: 10px;
-        padding: 12px 16px 12px 100px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        height: 115px !important; /* Isko humne exact baaki cards ki tarah 115px kar diya */
-        box-sizing: border-box;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .wdc-3d-avatar {
-        position: absolute;
-        left: 12px;
-        bottom: 5px; /* Avatar thoda sa bahar pop-out karega premium feel ke liye */
-        width: 85px;
-        height: 105px; /* Avatar ki height halki si adjust ki taaki cut na ho */
-        object-fit: contain;
-        z-index: 10;
-        filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
-        transition: transform 0.3s ease, filter 0.3s ease;
-    }
+    /* Purane .wdc-contender-card ko isse replace karo */
+.wdc-contender-card {
+    background: #181820;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 12px 16px 12px 90px; /* Padding adjust ki taaki text thoda left aaye */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Text ko vertically center karega */
+    width: 100%;
+    height: 115px !important; 
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Purane .wdc-3d-avatar ko isse replace karo taaki driver image perfect scale ho */
+.wdc-3d-avatar {
+    position: absolute;
+    left: 8px;
+    bottom: 0px; /* Bilkul bottom par align rahega */
+    width: 80px;
+    height: 110px; 
+    object-fit: contain;
+    z-index: 10;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
     .wdc-wrapper-box:hover .wdc-contender-card {
         border-color: #FF1801 !important;
         box-shadow: 0 0 20px rgba(255, 24, 1, 0.35) !important;
