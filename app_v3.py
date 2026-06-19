@@ -519,9 +519,41 @@ with row2_cols[0]:
     """, unsafe_allow_html=True)
 
 with row2_cols[1]:
-    st.markdown('<div class="prediction-container paddock-box" style="border-left: 4px solid #27F4D2; align-items: stretch; padding: 12px 14px; min-height: 85px; max-height: 85px;">', unsafe_allow_html=True)
-    trigger_prediction = st.button("Generate Grid Prediction", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    /* Style the native Streamlit button column container to look like the paddock-box card */
+    div[data-testid="stColumn"]:nth-of-type(5) > div[data-testid="stVerticalBlockBorderWrapper"] > div > div {
+        background: #181820 !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255,255,255,0.04) !important;
+        border-left: 4px solid #27F4D2 !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35) !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        min-height: 85px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 12px 14px !important;
+        box-sizing: border-box !important;
+    }
+    /* The prediction button itself */
+    div[data-testid="stColumn"]:nth-of-type(5) button[kind="secondary"] {
+        background-color: transparent !important;
+        color: #27F4D2 !important;
+        border: 1px solid rgba(39,244,210,0.4) !important;
+        font-weight: bold !important;
+        width: 100% !important;
+        height: 46px !important;
+        transition: all 0.3s ease !important;
+    }
+    div[data-testid="stColumn"]:nth-of-type(5) button[kind="secondary"]:hover {
+        background-color: #27F4D2 !important;
+        color: #111116 !important;
+        box-shadow: 0 0 15px rgba(39,244,210,0.4) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    trigger_prediction = st.button("Generate Grid Prediction", use_container_width=True, key="predict_btn")
 
 with row2_cols[2]:
     st.markdown(f"""
