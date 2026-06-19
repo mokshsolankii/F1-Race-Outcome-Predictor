@@ -522,7 +522,7 @@ with row1_cols[2]:
     <div class="paddock-box" style="border-left: 4px solid #FF1801; align-items: flex-start; text-align: left !important; line-height: 1.35;">
         <span style='color: #888888; font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.5px;'>Upcoming Live Weekend</span>
         <strong style='color: #FFFFFF; font-size: 1.0em; margin-top: 2px;'> {next_race_name}</strong>
-        <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'>📅 {next_race_date_str}</span>
+        <span style='color: #FF1801; font-size: 0.8em; font-weight: bold;'> {next_race_date_str}</span>
     </div>
     """, unsafe_allow_html=True)
 
