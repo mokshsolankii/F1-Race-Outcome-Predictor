@@ -645,7 +645,7 @@ if trigger_prediction:
                 p3_color = TEAM_COLORS.get(p3_row['team'], '#FFFFFF')
                 p3_logo_centered = get_base64_logo_html(p3_row['team'], p3_color, centered=True)
                 with podium_cols[2]:
-                    st.markdown("""
+                    st.markdown('''
 <div style=
     "background-color: rgba(39, 244, 210, 0.1); 
     border: 1px solid rgba(39, 244, 210, 0.3); 
@@ -664,7 +664,7 @@ if trigger_prediction:
         Prediction output processed cleanly.
     </span>
 </div>
-""", unsafe_allow_html=True)
+''', unsafe_allow_html=True)
 
             st.markdown("<br><h3 style='margin-top: 35px; font-weight:600;'>🏁 Full Predicted Grid Standing</h3>", unsafe_allow_html=True)
             st.markdown("---")
