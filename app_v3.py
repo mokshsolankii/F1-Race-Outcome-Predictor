@@ -484,9 +484,8 @@ with row1_cols[3]:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-        wcc_data = pd.DataFrame({"Pos": [1, 2, 3, 4, 5], "Team": ["Mercedes", "Ferrari", "McLaren", "Red Bull Racing", "Cadillac"], "Points": [262, 190, 141, 89, 0]})
-        st.table(wcc_data.set_index("Pos"))
+wcc_data = pd.DataFrame({"Pos": [1, 2, 3, 4, 5], "Team": ["Mercedes", "Ferrari", "McLaren", "Red Bull Racing", "Cadillac"], "Points": [262, 190, 141, 89, 0]})
+st.table(wcc_data.set_index("Pos"))
 
 # ==================== ROW 2 CONSOLE INTERFACES ====================
 row2_cols = st.columns(3)
